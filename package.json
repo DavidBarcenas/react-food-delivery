@@ -19,10 +19,17 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
     "build": "react-scripts build",
+    "eject": "react-scripts eject",
+    "format": "prettier --write \"src/**/*.+(js|ts|tsx|json|css|scss|gql|graphql)\"",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "prepare": "husky install",
+    "start": "react-scripts start",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "typecheck": "tsc -b"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   },
   "eslintConfig": {
     "extends": [
@@ -42,8 +49,22 @@
       "last 1 safari version"
     ]
   },
+  "importSort": {
+    ".js, .jsx, .es6, .es": {
+      "parser": "babylon",
+      "style": "eslint",
+      "options": {}
+    },
+    ".ts, .tsx": {
+      "parser": "typescript",
+      "style": "eslint",
+      "options": {}
+    }
+  },
   "devDependencies": {
     "autoprefixer": "^10.4.4",
+    "concurrently": "^7.0.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8.11.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.25.4",
@@ -51,6 +72,8 @@
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.29.4",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.3.7",
     "postcss": "^8.4.12",
     "prettier": "^2.6.0",
     "tailwindcss": "^3.0.23"
