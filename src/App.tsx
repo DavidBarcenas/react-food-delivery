@@ -1,11 +1,7 @@
+import LoggedOutRouter from './routers/logged-out-router';
+
 function App() {
-  return (
-    <div className='App'>
-      <header className='App-header'>
-        <h1>Food Delivery</h1>
-      </header>
-    </div>
-  );
+  return <LoggedOutRouter />;
 }
 
 export default App;
