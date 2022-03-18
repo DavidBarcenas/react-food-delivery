@@ -1,23 +1,44 @@
+import {appendErrors, useForm} from 'react-hook-form';
+
+interface LoginForm {
+  email: string;
+  password: string;
+}
+
 function Login() {
+  const {
+    register,
+    handleSubmit,
+    formState: {errors},
+  } = useForm<LoginForm>();
+
+  function onSubmit(data: LoginForm) {
+    console.log(data);
+  }
+
   return (
     <div className='flex h-screen items-center justify-center bg-gray-800'>
       <div className='w-full max-w-lg rounded-lg bg-white py-10 text-center'>
         <h1 className='mb-5 text-2xl text-gray-800'>Ingresa a Food Delivery</h1>
-        <form className='flex flex-col px-5'>
+        <form onSubmit={handleSubmit(onSubmit)} className='grid gap-7 px-5'>
+          <div>
+            <input
+              {...register('email', {required: true})}
+              name='email'
+              type='email'
+              required
+              placeholder='Correo electrónico'
+              className='input'
+            />
+          </div>
           <input
-            type='text'
-            placeholder='Correo electrónico'
-            className='
-            mb-3 rounded-lg border-2 bg-gray-100 py-3 px-5 shadow-sm focus:border-green-500 focus:border-opacity-50 focus:outline-none'
-          />
-          <input
+            {...register('password', {required: 'La contraseña es requerida', minLength: 8})}
             type='password'
+            required
             placeholder='Contraseña'
-            className='mb-3 rounded-lg border-2 bg-gray-100 py-3 px-5 shadow-sm focus:border-green-500 focus:border-opacity-50 focus:outline-none'
+            className='input'
           />
-          <button
-            type='submit'
-            className='y-3 rounded-lg bg-green-500 py-3 px-5 text-lg text-white shadow-sm'>
+          <button type='submit' className='btn'>
             Acceder
           </button>
         </form>
