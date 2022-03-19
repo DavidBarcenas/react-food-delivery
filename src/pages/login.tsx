@@ -5,6 +5,7 @@ import {loginMutation, loginMutationVariables} from '../types/LoginMutation';
 import InputError from '../components/input-error';
 import logo from '../assets/img/logo.png';
 import Button from '../components/button';
+import {emailRegex} from '../utils/validators';
 
 const LOGIN_MUTATION = gql`
   mutation loginMutation($loginInput: LoginInput!) {
@@ -65,14 +66,18 @@ function Login() {
           )}
           <div>
             <input
-              {...register('email', {required: 'El correo electrónico es requerido'})}
+              {...register('email', {
+                required: true,
+                pattern: emailRegex,
+              })}
               name='email'
               type='email'
               required
               placeholder='Correo electrónico'
               className='input'
             />
-            {email?.message && <InputError message={email?.message} />}
+            {email?.type === 'required' && <InputError message='El correo es requerido' />}
+            {email?.type === 'pattern' && <InputError message='Ingresa un correo válido' />}
           </div>
           <div>
             <input
@@ -91,7 +96,7 @@ function Login() {
         </form>
         <p className='text-center text-sm'>
           ¿Eres nuevo por aqui?{' '}
-          <Link to='/signup' className='text-lime-500'>
+          <Link to='/signup' className='text-lime-500 hover:underline'>
             Crea un cuenta
           </Link>
         </p>
