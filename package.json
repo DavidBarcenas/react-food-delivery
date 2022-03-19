@@ -21,7 +21,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "apollo:codegen": "apollo client:codegen src/types --target=typescript --outputFlat",
+    "apollo:codegen": "rm -rf src/types && apollo client:codegen src/types --target=typescript --outputFlat",
     "build": "react-scripts build",
     "eject": "react-scripts eject",
     "format": "prettier --write \"src/**/*.+(js|jsx|ts|tsx|json|css|scss|gql|graphql)\"",
@@ -51,13 +51,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "importSort": {
-    ".ts, .tsx": {
-      "parser": "typescript",
-      "style": "eslint",
-      "options": {}
-    }
   },
   "devDependencies": {
     "@typescript-eslint/parser": "^5.15.0",

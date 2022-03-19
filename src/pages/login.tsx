@@ -1,12 +1,12 @@
 import {gql, useMutation} from '@apollo/client';
 import {useForm} from 'react-hook-form';
-import {LoginMutation, LoginMutationVariables} from '../types/LoginMutation';
+import {loginMutation, loginMutationVariables} from '../types/LoginMutation';
 import InputError from '../components/input-error';
 import logo from '../assets/img/logo.png';
 
 const LOGIN_MUTATION = gql`
-  mutation LoginMutation($email: String!, $password: String!) {
-    login(input: {email: $email, passsword: $password}) {
+  mutation loginMutation($loginInput: LoginInput!) {
+    login(input: $loginInput) {
       ok
       token
       error
@@ -22,11 +22,29 @@ interface LoginForm {
 function Login() {
   const {register, handleSubmit, formState} = useForm<LoginForm>();
   const {email, password} = formState.errors;
-  const [loginMutation] = useMutation<LoginMutation, LoginMutationVariables>(LOGIN_MUTATION);
+  const [loginMutation, {data: loginMutationResult, loading}] = useMutation<
+    loginMutation,
+    loginMutationVariables
+  >(LOGIN_MUTATION, {
+    onCompleted,
+  });
+
+  function onCompleted(data: loginMutation): void {
+    const {ok, token} = data.login;
+    if (ok) {
+      console.log(token);
+    }
+  }
 
   function onSubmit(data: LoginForm) {
-    const {email, password} = data;
-    loginMutation({variables: {email, password}});
+    if (!loading) {
+      const {email, password} = data;
+      loginMutation({
+        variables: {
+          loginInput: {email, password},
+        },
+      });
+    }
   }
 
   return (
@@ -36,6 +54,9 @@ function Login() {
           <img src={logo} alt='Food Delivery' width='80' className='inline-block' />
           <h1 className='mb-5 text-2xl text-gray-800'>Ingresa a Food Delivery</h1>
         </div>
+        {loginMutationResult?.login.error && (
+          <InputError message={loginMutationResult?.login.error} />
+        )}
         <form onSubmit={handleSubmit(onSubmit)} className='grid gap-5 px-10'>
           <div>
             <input
@@ -62,7 +83,7 @@ function Login() {
             )}
           </div>
           <button type='submit' className='btn'>
-            Acceder
+            {loading ? 'Cargando...' : 'Acceder'}
           </button>
         </form>
       </div>
