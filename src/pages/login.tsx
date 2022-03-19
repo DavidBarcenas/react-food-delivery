@@ -48,16 +48,19 @@ function Login() {
   }
 
   return (
-    <div className='flex h-screen items-center justify-center bg-gray-800'>
+    <div className='flex h-screen flex-col items-center'>
       <div className='w-full max-w-md rounded-lg bg-white py-20'>
         <div className='mb-8 text-center'>
           <img src={logo} alt='Food Delivery' width='80' className='inline-block' />
-          <h1 className='mb-5 text-2xl text-gray-800'>Ingresa a Food Delivery</h1>
+          <h1 className='mb-1 text-3xl text-gray-800'>
+            Food <span className='font-medium text-green-500'>Delivery</span>
+          </h1>
+          <p>Bienvenido de nuevo</p>
         </div>
         {loginMutationResult?.login.error && (
           <InputError message={loginMutationResult?.login.error} />
         )}
-        <form onSubmit={handleSubmit(onSubmit)} className='grid gap-5 px-10'>
+        <form onSubmit={handleSubmit(onSubmit)} className='mb-5 grid gap-5 px-10'>
           <div>
             <input
               {...register('email', {required: 'El correo electrónico es requerido'})}
@@ -86,6 +89,9 @@ function Login() {
             {loading ? 'Cargando...' : 'Acceder'}
           </button>
         </form>
+        <p className='text-center text-sm'>
+          ¿Eres nuevo por aqui? <span className='text-green-500'>Crea un cuenta</span>
+        </p>
       </div>
     </div>
   );
