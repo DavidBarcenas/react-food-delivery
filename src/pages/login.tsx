@@ -1,10 +1,12 @@
 import {gql, useMutation} from '@apollo/client';
 import {useForm} from 'react-hook-form';
+
 import InputError from '../components/input-error';
 import logo from '../assets/img/logo.png';
+import {LoginMutation, LoginMutationVariables} from '../types/LoginMutation';
 
 const LOGIN_MUTATION = gql`
-  mutation Login($email: String!, $password: String!) {
+  mutation loginMutation($email: String!, $password: String!) {
     login(input: {email: $email, password: $password}) {
       ok
       token
@@ -21,7 +23,7 @@ interface LoginForm {
 function Login() {
   const {register, handleSubmit, formState} = useForm<LoginForm>();
   const {email, password} = formState.errors;
-  const [loginMutation] = useMutation(LOGIN_MUTATION);
+  const [loginMutation] = useMutation<LoginMutation, LoginMutationVariables>(LOGIN_MUTATION);
 
   function onSubmit(data: LoginForm) {
     const {email, password} = data;
