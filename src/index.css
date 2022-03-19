@@ -10,7 +10,7 @@
 }
 
 .btn {
-  @apply rounded-lg bg-green-500 py-3 py-3 px-5 text-lg text-white shadow-sm hover:bg-opacity-90;
+  @apply rounded-lg bg-green-500 py-3 px-5 text-lg text-white shadow-sm hover:bg-opacity-90;
 }
 
 @tailwind utilities;

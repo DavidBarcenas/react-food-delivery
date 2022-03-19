@@ -1,5 +1,17 @@
+import {gql, useMutation} from '@apollo/client';
 import {useForm} from 'react-hook-form';
+import InputError from '../components/input-error';
 import logo from '../assets/img/logo.png';
+
+const LOGIN_MUTATION = gql`
+  mutation Login($email: String!, $password: String!) {
+    login(input: {email: $email, password: $password}) {
+      ok
+      token
+      error
+    }
+  }
+`;
 
 interface LoginForm {
   email: string;
@@ -7,14 +19,13 @@ interface LoginForm {
 }
 
 function Login() {
-  const {
-    register,
-    handleSubmit,
-    formState: {errors},
-  } = useForm<LoginForm>();
+  const {register, handleSubmit, formState} = useForm<LoginForm>();
+  const {email, password} = formState.errors;
+  const [loginMutation] = useMutation(LOGIN_MUTATION);
 
   function onSubmit(data: LoginForm) {
-    console.log(data);
+    const {email, password} = data;
+    loginMutation({variables: {email, password}});
   }
 
   return (
@@ -34,7 +45,7 @@ function Login() {
               placeholder='Correo electrónico'
               className='input'
             />
-            {errors.email?.message && <span className='input-error'>{errors.email?.message}</span>}
+            {email?.message && <InputError message={email?.message} />}
           </div>
           <div>
             <input
@@ -44,11 +55,9 @@ function Login() {
               required
               className='input'
             />
-            {errors.password?.message && (
-              <span className='input-error'>{errors.password?.message}</span>
-            )}
-            {errors.password?.type === 'minLength' && (
-              <span className='input-error'>La contraseña debe tener al menos 6 caracteres</span>
+            {password?.message && <InputError message={password?.message} />}
+            {password?.type === 'minLength' && (
+              <InputError message='La contraseña debe tener al menos 6 caracteres' />
             )}
           </div>
           <button type='submit' className='btn'>
