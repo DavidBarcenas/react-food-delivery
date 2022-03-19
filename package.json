@@ -21,7 +21,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "apollo:codegen": "npx apollo client:codegen src/types --target=typescript --outputFlat",
+    "apollo:codegen": "apollo client:codegen src/types --target=typescript --outputFlat",
     "build": "react-scripts build",
     "eject": "react-scripts eject",
     "format": "prettier --write \"src/**/*.+(js|jsx|ts|tsx|json|css|scss|gql|graphql)\"",
@@ -53,11 +53,6 @@
     ]
   },
   "importSort": {
-    ".js, .jsx, .es6, .es": {
-      "parser": "babylon",
-      "style": "eslint",
-      "options": {}
-    },
     ".ts, .tsx": {
       "parser": "typescript",
       "style": "eslint",
@@ -65,12 +60,14 @@
     }
   },
   "devDependencies": {
+    "@typescript-eslint/parser": "^5.15.0",
     "apollo": "^2.33.9",
     "autoprefixer": "^10.4.4",
     "concurrently": "^7.0.0",
     "cross-env": "^7.0.3",
     "eslint": "^8.11.0",
     "eslint-config-prettier": "^8.5.0",
+    "eslint-import-resolver-typescript": "^2.5.0",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jest": "^26.1.1",
     "eslint-plugin-jsx-a11y": "^6.5.1",

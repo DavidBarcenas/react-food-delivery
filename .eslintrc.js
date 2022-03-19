@@ -1,11 +1,12 @@
 module.exports = {
+  parser:  "@typescript-eslint/parser", 
   extends: [
     'plugin:@typescript-eslint/recommended',
     'plugin:jsx-a11y/recommended',
     'plugin:react/recommended',
     'prettier'
   ],
-  plugins: ['prettier', 'import', 'jsx-a11y', 'jest'],
+  plugins: ['prettier', 'jsx-a11y', 'jest', 'import'],
   rules: {
     'react/react-in-jsx-scope': 'off',
     'react/no-unescaped-entities': 'off',
@@ -44,6 +45,14 @@ module.exports = {
   settings: {
     'react': {
       'version': 'detect'
-    }
+    },
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true
+      },
+    },
   },
 }
