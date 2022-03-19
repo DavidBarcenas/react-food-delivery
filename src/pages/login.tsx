@@ -1,8 +1,10 @@
+import {Link} from 'react-router-dom';
 import {gql, useMutation} from '@apollo/client';
 import {useForm} from 'react-hook-form';
 import {loginMutation, loginMutationVariables} from '../types/LoginMutation';
 import InputError from '../components/input-error';
 import logo from '../assets/img/logo.png';
+import Button from '../components/button';
 
 const LOGIN_MUTATION = gql`
   mutation loginMutation($loginInput: LoginInput!) {
@@ -49,18 +51,18 @@ function Login() {
 
   return (
     <div className='flex h-screen flex-col items-center'>
-      <div className='w-full max-w-md rounded-lg bg-white py-20'>
-        <div className='mb-8 text-center'>
+      <div className='w-full max-w-lg rounded-lg bg-white py-20'>
+        <div className='mb-8 px-10 text-center'>
           <img src={logo} alt='Food Delivery' width='80' className='inline-block' />
           <h1 className='mb-1 text-3xl text-gray-800'>
-            Food <span className='font-medium text-green-500'>Delivery</span>
+            <span className='font-medium text-lime-500'>Food</span> Delivery
           </h1>
           <p>Bienvenido de nuevo</p>
         </div>
-        {loginMutationResult?.login.error && (
-          <InputError message={loginMutationResult?.login.error} />
-        )}
         <form onSubmit={handleSubmit(onSubmit)} className='mb-5 grid gap-5 px-10'>
+          {loginMutationResult?.login.error && (
+            <InputError className='text-center' message={loginMutationResult?.login.error} filled />
+          )}
           <div>
             <input
               {...register('email', {required: 'El correo electrónico es requerido'})}
@@ -85,12 +87,13 @@ function Login() {
               <InputError message='La contraseña debe tener al menos 6 caracteres' />
             )}
           </div>
-          <button type='submit' className='btn'>
-            {loading ? 'Cargando...' : 'Acceder'}
-          </button>
+          <Button type='submit' text='Acceder' loading={loading} />
         </form>
         <p className='text-center text-sm'>
-          ¿Eres nuevo por aqui? <span className='text-green-500'>Crea un cuenta</span>
+          ¿Eres nuevo por aqui?{' '}
+          <Link to='/signup' className='text-lime-500'>
+            Crea un cuenta
+          </Link>
         </p>
       </div>
     </div>

@@ -1,5 +1,18 @@
-function InputError({message}: {message: string}) {
-  return <span className='input-error'>{message}</span>;
+interface InputErrorProps {
+  message: string;
+  className?: string;
+  filled?: boolean;
+}
+
+function InputError({message, className, filled = false}: InputErrorProps) {
+  return (
+    <span
+      className={`block w-full rounded-md text-sm text-danger-alert-color
+        ${className || ''} 
+        ${filled ? 'bg-danger-alert py-2 font-medium' : 'ml-1 py-1'}`}>
+      {message}
+    </span>
+  );
 }
 
 export default InputError;
