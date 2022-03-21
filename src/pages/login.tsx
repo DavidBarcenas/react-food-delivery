@@ -7,6 +7,7 @@ import InputError from '../components/input-error';
 import logo from '../assets/img/logo.png';
 import Button from '../components/button';
 import {emailRegex} from '../utils/validators';
+import {isLoggedInVar} from '../apollo';
 
 const LOGIN_MUTATION = gql`
   mutation loginMutation($loginInput: LoginInput!) {
@@ -37,6 +38,7 @@ function Login() {
     const {ok, token} = data.login;
     if (ok) {
       console.log(token);
+      isLoggedInVar(true);
     }
   }
 

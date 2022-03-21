@@ -1,5 +1,5 @@
 import {useRef} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import {gql, useMutation} from '@apollo/client';
 import {useForm} from 'react-hook-form';
 import {Helmet} from 'react-helmet';
@@ -8,6 +8,10 @@ import logo from '../assets/img/logo.png';
 import Button from '../components/button';
 import {emailRegex} from '../utils/validators';
 import {UserRole} from '../types/globalTypes';
+import {
+  createAccountMutation,
+  createAccountMutationVariables,
+} from '../types/createAccountMutation';
 
 const CREATE_ACCOUNT_MUTATION = gql`
   mutation createAccountMutation($createAccountInput: CreateAccountInput!) {
@@ -26,16 +30,35 @@ interface RegisterForm {
 }
 
 function Signup() {
+  const navigate = useNavigate();
   const {register, handleSubmit, formState, watch} = useForm<RegisterForm>({
     defaultValues: {role: UserRole.Client},
   });
   const {email, password, repeatPassword} = formState.errors;
-  const [createAccountMutation] = useMutation(CREATE_ACCOUNT_MUTATION);
+  const [createAccountMutation, {data: createAccountMutationResult, loading}] = useMutation<
+    createAccountMutation,
+    createAccountMutationVariables
+  >(CREATE_ACCOUNT_MUTATION, {onCompleted});
   const passwordRef = useRef({});
   passwordRef.current = watch('password', '');
 
+  function onCompleted(data: createAccountMutation): void {
+    const {ok} = data.createAccount;
+    if (ok) {
+      console.log('Created!!!');
+      navigate('/');
+    }
+  }
+
   function onSubmit(data: RegisterForm) {
-    console.log(data);
+    if (!loading) {
+      const {email, password, role} = data;
+      createAccountMutation({
+        variables: {
+          createAccountInput: {email, password, role},
+        },
+      });
+    }
   }
 
   return (
@@ -52,6 +75,13 @@ function Signup() {
           <p>¡Empecemos!</p>
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className='mb-5 grid gap-5 px-10'>
+          {createAccountMutationResult?.createAccount.error && (
+            <InputError
+              className='text-center'
+              message={createAccountMutationResult?.createAccount.error}
+              filled
+            />
+          )}
           <div>
             <input
               {...register('email', {
@@ -106,7 +136,7 @@ function Signup() {
               <input type='radio' {...register('role')} value={UserRole.Owner} />
             </label>
           </div>
-          <Button type='submit' text='Registrarse' />
+          <Button type='submit' text='Registrarse' loading={loading} />
         </form>
         <p className='text-center text-sm'>
           ¿Ya tienes una cuenta?
