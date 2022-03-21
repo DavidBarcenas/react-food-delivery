@@ -1,3 +1,4 @@
+import {useRef} from 'react';
 import {Link} from 'react-router-dom';
 import {gql, useMutation} from '@apollo/client';
 import {useForm} from 'react-hook-form';
@@ -25,11 +26,13 @@ interface RegisterForm {
 }
 
 function Signup() {
-  const {register, handleSubmit, formState} = useForm<RegisterForm>({
+  const {register, handleSubmit, formState, watch} = useForm<RegisterForm>({
     defaultValues: {role: UserRole.Client},
   });
   const {email, password, repeatPassword} = formState.errors;
   const [createAccountMutation] = useMutation(CREATE_ACCOUNT_MUTATION);
+  const passwordRef = useRef({});
+  passwordRef.current = watch('password', '');
 
   function onSubmit(data: RegisterForm) {
     console.log(data);
@@ -80,18 +83,14 @@ function Signup() {
           <div>
             <input
               {...register('repeatPassword', {
-                required: 'La contraseña es requerida',
-                minLength: 6,
+                validate: value => value === passwordRef.current || 'Las contraseñas no coinciden',
               })}
               type='password'
               placeholder='Confirmar contraseña'
               required
               className='input'
             />
-            {repeatPassword?.message && <InputError message={repeatPassword?.message} />}
-            {repeatPassword?.type === 'minLength' && (
-              <InputError message='La contraseña debe tener al menos 6 caracteres' />
-            )}
+            {repeatPassword?.message && <InputError message={repeatPassword.message} />}
           </div>
           <div>
             <label>
