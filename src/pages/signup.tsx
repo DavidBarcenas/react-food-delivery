@@ -39,6 +39,26 @@ function Signup() {
     createAccountMutation,
     createAccountMutationVariables
   >(CREATE_ACCOUNT_MUTATION, {onCompleted});
+  const roles = [
+    {
+      text: 'Quiero ser cliente',
+      icon: 'person_outline',
+      id: 'Client',
+      value: UserRole.Client,
+    },
+    {
+      text: 'Quiero ser repartidor',
+      icon: 'delivery_dining',
+      id: 'Delivery',
+      value: UserRole.Delivery,
+    },
+    {
+      text: 'Quiero registrar mi negocio',
+      icon: 'storefront',
+      id: 'Owner',
+      value: UserRole.Owner,
+    },
+  ];
   const passwordRef = useRef({});
   passwordRef.current = watch('password', '');
 
@@ -123,18 +143,24 @@ function Signup() {
             {repeatPassword?.message && <InputError message={repeatPassword.message} />}
           </div>
           <div>
-            <label>
-              Client
-              <input type='radio' {...register('role')} value={UserRole.Client} />
-            </label>
-            <label>
-              Delivery
-              <input type='radio' {...register('role')} value={UserRole.Delivery} />
-            </label>
-            <label>
-              Owner
-              <input type='radio' {...register('role')} value={UserRole.Owner} />
-            </label>
+            {roles.map(({id, text, value, icon}) => (
+              <label
+                htmlFor={id}
+                key={id}
+                className={`group mb-3 flex items-center rounded-lg border-2 py-4 px-3 transition-colors hover:cursor-pointer hover:border-lime-500 ${
+                  value === watch('role') ? 'border-lime-500' : 'border-gray-200'
+                }`}>
+                <span className='material-icons mr-2'>{icon}</span>
+                <p>{text}</p>
+                <input
+                  type='radio'
+                  id={id}
+                  {...register('role')}
+                  value={value}
+                  className='hidden'
+                />
+              </label>
+            ))}
           </div>
           <Button type='submit' text='Registrarse' loading={loading} />
         </form>
