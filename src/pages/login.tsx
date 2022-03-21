@@ -1,7 +1,8 @@
 import {Link} from 'react-router-dom';
 import {gql, useMutation} from '@apollo/client';
 import {useForm} from 'react-hook-form';
-import {loginMutation, loginMutationVariables} from '../types/LoginMutation';
+import {Helmet} from 'react-helmet';
+import {loginMutation, loginMutationVariables} from '../types/loginMutation';
 import InputError from '../components/input-error';
 import logo from '../assets/img/logo.png';
 import Button from '../components/button';
@@ -52,6 +53,9 @@ function Login() {
 
   return (
     <div className='flex h-screen flex-col items-center'>
+      <Helmet>
+        <title>Iniciar sesión | Food Delivery</title>
+      </Helmet>
       <div className='w-full max-w-lg rounded-lg bg-white py-20'>
         <div className='mb-8 px-10 text-center'>
           <img src={logo} alt='Food Delivery' width='80' className='inline-block' />
@@ -95,9 +99,9 @@ function Login() {
           <Button type='submit' text='Acceder' loading={loading} />
         </form>
         <p className='text-center text-sm'>
-          ¿Eres nuevo por aqui?{' '}
-          <Link to='/signup' className='text-lime-500 hover:underline'>
-            Crea un cuenta
+          ¿Eres nuevo por aqui?
+          <Link to='/signup' className='ml-1 text-lime-500 hover:underline'>
+            Crea una cuenta
           </Link>
         </p>
       </div>
