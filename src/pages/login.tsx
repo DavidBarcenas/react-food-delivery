@@ -1,13 +1,14 @@
 import {Link} from 'react-router-dom';
 import {gql, useMutation} from '@apollo/client';
 import {useForm} from 'react-hook-form';
-import {Helmet} from 'react-helmet';
+import {Helmet} from 'react-helmet-async';
 import {loginMutation, loginMutationVariables} from '../types/loginMutation';
 import InputError from '../components/input-error';
 import logo from '../assets/img/logo.png';
 import Button from '../components/button';
 import {emailRegex} from '../utils/validators';
-import {isLoggedInVar} from '../apollo';
+import {authToken, isLoggedInVar} from '../apollo';
+import {LOCALSTORAGE_TOKEN} from '../constants';
 
 const LOGIN_MUTATION = gql`
   mutation loginMutation($loginInput: LoginInput!) {
@@ -36,8 +37,9 @@ function Login() {
 
   function onCompleted(data: loginMutation): void {
     const {ok, token} = data.login;
-    if (ok) {
-      console.log(token);
+    if (ok && token) {
+      localStorage.setItem(LOCALSTORAGE_TOKEN, token);
+      authToken(token);
       isLoggedInVar(true);
     }
   }

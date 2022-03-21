@@ -2,7 +2,7 @@ import {useRef} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {gql, useMutation} from '@apollo/client';
 import {useForm} from 'react-hook-form';
-import {Helmet} from 'react-helmet';
+import {Helmet} from 'react-helmet-async';
 import InputError from '../components/input-error';
 import logo from '../assets/img/logo.png';
 import Button from '../components/button';
@@ -39,23 +39,23 @@ function Signup() {
     createAccountMutation,
     createAccountMutationVariables
   >(CREATE_ACCOUNT_MUTATION, {onCompleted});
-  const roles = [
+  const roleList = [
     {
       text: 'Quiero ser cliente',
       icon: 'person_outline',
-      id: 'Client',
+      id: 'client',
       value: UserRole.Client,
     },
     {
       text: 'Quiero ser repartidor',
       icon: 'delivery_dining',
-      id: 'Delivery',
+      id: 'delivery',
       value: UserRole.Delivery,
     },
     {
       text: 'Quiero registrar mi negocio',
       icon: 'storefront',
-      id: 'Owner',
+      id: 'owner',
       value: UserRole.Owner,
     },
   ];
@@ -65,7 +65,7 @@ function Signup() {
   function onCompleted(data: createAccountMutation): void {
     const {ok} = data.createAccount;
     if (ok) {
-      console.log('Created!!!');
+      // TODO: agregar un ensaje de confirmacion de cuenta creada
       navigate('/');
     }
   }
@@ -143,7 +143,7 @@ function Signup() {
             {repeatPassword?.message && <InputError message={repeatPassword.message} />}
           </div>
           <div>
-            {roles.map(({id, text, value, icon}) => (
+            {roleList.map(({id, text, value, icon}) => (
               <label
                 htmlFor={id}
                 key={id}

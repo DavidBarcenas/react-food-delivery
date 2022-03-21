@@ -1,6 +1,9 @@
 import {ApolloClient, InMemoryCache, makeVar} from '@apollo/client';
+import {LOCALSTORAGE_TOKEN} from './constants';
 
-export const isLoggedInVar = makeVar(false);
+const token = localStorage.getItem(LOCALSTORAGE_TOKEN);
+export const isLoggedInVar = makeVar(!!token);
+export const authToken = makeVar(token);
 
 export const client = new ApolloClient({
   uri: 'http://localhost:4000/graphql',
@@ -10,6 +13,9 @@ export const client = new ApolloClient({
         fields: {
           isLoggedIn: {
             read: () => isLoggedInVar(),
+          },
+          token: {
+            read: () => authToken,
           },
         },
       },
