@@ -1,8 +1,14 @@
-function Spinner() {
+interface Spinner {
+  className?: string;
+  size?: 'normal' | 'large';
+}
+
+function Spinner({className, size = 'normal'}: Spinner) {
+  const classSize = size === 'normal' ? 'h-5 w-5' : 'h-8 w-8';
   return (
     <div className='flex items-center justify-center'>
       <svg
-        className='-ml-1 mr-3 h-5 w-5 animate-spin text-white'
+        className={`-ml-1 mr-3 animate-spin ${classSize} ${className || ''}`}
         xmlns='http://www.w3.org/2000/svg'
         fill='none'
         viewBox='0 0 24 24'>

@@ -29,7 +29,11 @@ function LoggedInRouter() {
   const {data, loading, error} = useQuery<meQuery>(ME_QUERY);
 
   if (!data || loading || error) {
-    return <Spinner />;
+    return (
+      <div className='flex h-screen items-center justify-center text-xl'>
+        <Spinner className='text-lime-500' size='large' />
+      </div>
+    );
   }
 
   switch (data.me?.role) {

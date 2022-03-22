@@ -8,13 +8,13 @@ import App from './app';
 import './index.css';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <BrowserRouter>
+  <BrowserRouter>
+    <React.StrictMode>
       <ApolloProvider client={client}>
         <App />
       </ApolloProvider>
-    </BrowserRouter>
-  </React.StrictMode>,
+    </React.StrictMode>
+  </BrowserRouter>,
   document.getElementById('root'),
 );
 
