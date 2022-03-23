@@ -4,7 +4,6 @@ import {gql, useMutation} from '@apollo/client';
 import {useForm} from 'react-hook-form';
 import {Helmet} from 'react-helmet-async';
 import InputError from '../components/input-error';
-import logo from '../assets/img/logo.png';
 import Button from '../components/button';
 import {emailRegex} from '../utils/validators';
 import {UserRole} from '../types/globalTypes';
@@ -12,6 +11,7 @@ import {
   createAccountMutation,
   createAccountMutationVariables,
 } from '../types/createAccountMutation';
+import Logo from '../components/logo';
 
 const CREATE_ACCOUNT_MUTATION = gql`
   mutation createAccountMutation($createAccountInput: CreateAccountInput!) {
@@ -65,7 +65,6 @@ function Signup() {
   function onCompleted(data: createAccountMutation): void {
     const {ok} = data.createAccount;
     if (ok) {
-      // TODO: agregar un ensaje de confirmacion de cuenta creada
       navigate('/');
     }
   }
@@ -88,11 +87,8 @@ function Signup() {
       </Helmet>
       <div className='w-full max-w-lg rounded-lg bg-white py-20'>
         <div className='mb-8 px-10 text-center'>
-          <img src={logo} alt='Food Delivery' width='80' className='inline-block' />
-          <h1 className='mb-1 text-3xl text-gray-800'>
-            <span className='font-medium text-lime-500'>Food</span> Delivery
-          </h1>
-          <p>¡Empecemos!</p>
+          <Logo mode='vertical' />
+          <p className='mt-1'>¡Empecemos!</p>
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className='mb-5 grid gap-5 px-10'>
           {createAccountMutationResult?.createAccount.error && (

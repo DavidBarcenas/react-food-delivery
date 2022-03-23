@@ -4,11 +4,11 @@ import {useForm} from 'react-hook-form';
 import {Helmet} from 'react-helmet-async';
 import {loginMutation, loginMutationVariables} from '../types/loginMutation';
 import InputError from '../components/input-error';
-import logo from '../assets/img/logo.png';
 import Button from '../components/button';
 import {emailRegex} from '../utils/validators';
 import {authToken, isLoggedInVar} from '../apollo';
-import {LOCALSTORAGE_TOKEN} from '../constants';
+import {LOCAL_STORAGE_TOKEN} from '../constants';
+import Logo from '../components/logo';
 
 const LOGIN_MUTATION = gql`
   mutation loginMutation($loginInput: LoginInput!) {
@@ -38,7 +38,7 @@ function Login() {
   function onCompleted(data: loginMutation): void {
     const {ok, token} = data.login;
     if (ok && token) {
-      localStorage.setItem(LOCALSTORAGE_TOKEN, token);
+      localStorage.setItem(LOCAL_STORAGE_TOKEN, token);
       authToken(token);
       isLoggedInVar(true);
     }
@@ -62,11 +62,8 @@ function Login() {
       </Helmet>
       <div className='w-full max-w-lg rounded-lg bg-white py-20'>
         <div className='mb-8 px-10 text-center'>
-          <img src={logo} alt='Food Delivery' width='80' className='inline-block' />
-          <h1 className='mb-1 text-3xl text-gray-800'>
-            <span className='font-medium text-lime-500'>Food</span> Delivery
-          </h1>
-          <p>Bienvenido de nuevo</p>
+          <Logo mode='vertical' />
+          <p className='mt-1'>Bienvenido de nuevo</p>
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className='mb-5 grid gap-5 px-10'>
           {loginMutationResult?.login.error && (
