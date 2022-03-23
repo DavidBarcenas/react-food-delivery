@@ -3,9 +3,9 @@ import Header from '../components/header';
 import Spinner from '../components/spinner';
 import {useProfile} from '../hooks/use-profile';
 import NotFound from '../pages/not-found';
-import ServerError from '../pages/server-error';
+import Error from '../pages/error';
 import {UserRole} from '../types/globalTypes';
-import Restaurants from './clients/restaurants';
+import Restaurants from '../pages/clients/restaurants';
 
 const CLIENT_ROUTES = [
   {path: '/', element: <Restaurants />},
@@ -18,7 +18,7 @@ function LoggedInRouter() {
   const routes = useRoutes(CLIENT_ROUTES);
 
   if (!!error) {
-    return <ServerError />;
+    return <Error />;
   }
 
   if (!data || loading) {

@@ -1,12 +1,12 @@
 import serverErrorImg from '../assets/img/internal-error.svg';
 import Button from '../components/button';
 
-interface ServerErrorProps {
+interface ErrorProps {
   message?: '';
   redirect?: '';
 }
 
-function ServerError({message}: ServerErrorProps) {
+function Error({message}: ErrorProps) {
   return (
     <div className='flex h-screen flex-col items-center justify-center px-4'>
       <img src={serverErrorImg} alt='Internal error' className='mb-5 md:w-1/3' />
@@ -20,4 +20,4 @@ function ServerError({message}: ServerErrorProps) {
   );
 }
 
-export default ServerError;
+export default Error;
