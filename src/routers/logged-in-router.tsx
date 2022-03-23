@@ -1,26 +1,19 @@
-import {gql, useQuery} from '@apollo/client';
-import {Route, Routes} from 'react-router-dom';
+import {useRoutes} from 'react-router-dom';
 import Header from '../components/header';
 import Spinner from '../components/spinner';
+import {useProfile} from '../hooks/use-profile';
 import ServerError from '../pages/server-error';
 import {UserRole} from '../types/globalTypes';
-import {meQuery} from '../types/meQuery';
 import Restaurants from './clients/restaurants';
 
-const ME_QUERY = gql`
-  query meQuery {
-    me {
-      id
-      email
-      role
-      emailVerified
-    }
-  }
-`;
+const CLIENT_ROUTES = [
+  {path: '/', element: <Restaurants />},
+  {path: '/my-profile', element: <h1>Mi Perfil</h1>},
+];
 
 function LoggedInRouter() {
-  const {data, loading, error} = useQuery<meQuery>(ME_QUERY);
-  console.log({error, loading, data});
+  const {data, loading, error} = useProfile();
+  const routes = useRoutes(CLIENT_ROUTES);
 
   if (!!error) {
     return <ServerError />;
@@ -37,9 +30,7 @@ function LoggedInRouter() {
   return (
     <>
       <Header />
-      <Routes>
-        {data.me?.role === UserRole.Client && <Route path='/' element={<Restaurants />} />}
-      </Routes>
+      <div className='mx-auto w-full px-10'>{data.me?.role === UserRole.Client && routes}</div>
     </>
   );
 }
