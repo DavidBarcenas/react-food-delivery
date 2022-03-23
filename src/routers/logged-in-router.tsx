@@ -2,6 +2,7 @@ import {useRoutes} from 'react-router-dom';
 import Header from '../components/header';
 import Spinner from '../components/spinner';
 import {useProfile} from '../hooks/use-profile';
+import NotFound from '../pages/not-found';
 import ServerError from '../pages/server-error';
 import {UserRole} from '../types/globalTypes';
 import Restaurants from './clients/restaurants';
@@ -9,6 +10,7 @@ import Restaurants from './clients/restaurants';
 const CLIENT_ROUTES = [
   {path: '/', element: <Restaurants />},
   {path: '/my-profile', element: <h1>Mi Perfil</h1>},
+  {path: '*', element: <NotFound />},
 ];
 
 function LoggedInRouter() {
