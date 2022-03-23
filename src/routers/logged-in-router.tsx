@@ -1,19 +1,11 @@
 import {gql, useQuery} from '@apollo/client';
 import {Route, Routes} from 'react-router-dom';
+import Header from '../components/header';
 import Spinner from '../components/spinner';
 import ServerError from '../pages/server-error';
 import {UserRole} from '../types/globalTypes';
 import {meQuery} from '../types/meQuery';
 import Restaurants from './clients/restaurants';
-
-function Client() {
-  return (
-    <Routes>
-      <Route path='/' element={<Restaurants />} />
-      <Route path='*' element={<h1>Upps! 404</h1>} />
-    </Routes>
-  );
-}
 
 const ME_QUERY = gql`
   query meQuery {
@@ -42,12 +34,14 @@ function LoggedInRouter() {
     );
   }
 
-  switch (data.me?.role) {
-    case UserRole.Client:
-      return <Client />;
-    default:
-      return <div>Lo sentimos, ocurrió un error. Por favor, intentalo más tarde.</div>;
-  }
+  return (
+    <>
+      <Header />
+      <Routes>
+        {data.me?.role === UserRole.Client && <Route path='/' element={<Restaurants />} />}
+      </Routes>
+    </>
+  );
 }
 
 export default LoggedInRouter;
