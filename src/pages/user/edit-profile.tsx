@@ -1,8 +1,20 @@
+import {gql, useMutation} from '@apollo/client';
 import {useForm} from 'react-hook-form';
 import Button from '../../components/button';
 import InputError from '../../components/input-error';
 import Title from '../../components/title';
+import {useProfile} from '../../hooks/use-profile';
+import {editProfile, editProfileVariables} from '../../types/editProfile';
 import {emailRegex} from '../../utils/validators';
+
+const EDIT_PROFILE_MUTATION = gql`
+  mutation editProfile($input: EditProfileInput!) {
+    editProfile(input: $input) {
+      ok
+      error
+    }
+  }
+`;
 
 interface EditProfileForm {
   email?: string;
@@ -10,11 +22,34 @@ interface EditProfileForm {
 }
 
 function EditProfile() {
-  const {register, formState, handleSubmit} = useForm<EditProfileForm>();
+  const {data} = useProfile();
+  const [editProfile, {loading}] = useMutation<editProfile, editProfileVariables>(
+    EDIT_PROFILE_MUTATION,
+    {onCompleted},
+  );
+  const {register, formState, handleSubmit} = useForm<EditProfileForm>({
+    defaultValues: {
+      email: data?.me?.email,
+    },
+  });
   const {email, password} = formState.errors;
 
-  function onSubmit() {
-    console.log('onSubmit');
+  function onCompleted(data: editProfile) {
+    if (data.editProfile.ok) {
+      // update cache
+    }
+  }
+
+  function onSubmit(data: EditProfileForm) {
+    const {email, password} = data;
+    editProfile({
+      variables: {
+        input: {
+          email,
+          ...(password?.trim() !== '' && {password}),
+        },
+      },
+    });
   }
 
   return (
@@ -26,7 +61,6 @@ function EditProfile() {
           <div>
             <input
               {...register('email', {
-                required: true,
                 pattern: emailRegex,
               })}
               name='email'
@@ -34,22 +68,20 @@ function EditProfile() {
               placeholder='Correo electrónico'
               className='input'
             />
-            {email?.type === 'required' && <InputError message='El correo es requerido' />}
             {email?.type === 'pattern' && <InputError message='Ingresa un correo válido' />}
           </div>
           <div>
             <input
-              {...register('password', {required: 'La contraseña es requerida', minLength: 6})}
+              {...register('password', {minLength: 6})}
               type='password'
               placeholder='Contraseña'
               className='input'
             />
-            {password?.message && <InputError message={password?.message} />}
             {password?.type === 'minLength' && (
               <InputError message='La contraseña debe tener al menos 6 caracteres' />
             )}
           </div>
-          <Button type='submit' text='Acceder' />
+          <Button type='submit' text='Guardar' loading={loading} />
         </form>
       </div>
     </div>

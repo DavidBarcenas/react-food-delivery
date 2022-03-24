@@ -27,12 +27,12 @@ function ConfirmEmail() {
       client.writeFragment({
         id: `User:${profile.me.id}`,
         fragment: gql`
-          fragment VerifyEmail on User {
-            verifyEmail
+          fragment VerifyEmailCache on User {
+            emailVerified
           }
         `,
         data: {
-          verifyEmail: true,
+          emailVerified: true,
         },
       });
       navigate('/');
