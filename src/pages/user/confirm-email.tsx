@@ -1,6 +1,6 @@
 import {gql, useApolloClient, useMutation} from '@apollo/client';
 import {useEffect} from 'react';
-import {useLocation} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import {useProfile} from '../../hooks/use-profile';
 import {verifyEmail, verifyEmailVariables} from '../../types/verifyEmail';
 
@@ -17,6 +17,7 @@ function ConfirmEmail() {
   const [verifyEmail] = useMutation<verifyEmail, verifyEmailVariables>(VERIFY_EMAIL_MUTATION, {
     onCompleted,
   });
+  const navigate = useNavigate();
   const client = useApolloClient();
   const location = useLocation();
   const {data: profile} = useProfile();
@@ -34,21 +35,20 @@ function ConfirmEmail() {
           verifyEmail: true,
         },
       });
+      navigate('/');
     }
   }
 
   useEffect(() => {
     const code = location.search.split('?code=')[1];
 
-    if (code) {
-      verifyEmail({
-        variables: {
-          input: {
-            code,
-          },
+    verifyEmail({
+      variables: {
+        input: {
+          code,
         },
-      });
-    }
+      },
+    });
   }, []);
 
   return (

@@ -1,7 +1,7 @@
 import {useReactiveVar} from '@apollo/client';
 import {HelmetProvider} from 'react-helmet-async';
 import {isLoggedInVar} from './apollo';
-import {ErrorBoundary} from './pages/error-boundary';
+import {ErrorBoundary} from './pages/error/error-boundary';
 import LoggedInRouter from './routers/logged-in-router';
 import LoggedOutRouter from './routers/logged-out-router';
 

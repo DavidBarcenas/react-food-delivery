@@ -2,7 +2,6 @@ import {useRef} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {gql, useMutation} from '@apollo/client';
 import {useForm} from 'react-hook-form';
-import {Helmet} from 'react-helmet-async';
 import InputError from '../components/input-error';
 import Button from '../components/button';
 import {emailRegex} from '../utils/validators';
@@ -12,6 +11,7 @@ import {
   createAccountMutationVariables,
 } from '../types/createAccountMutation';
 import Logo from '../components/logo';
+import Title from '../components/title';
 
 const CREATE_ACCOUNT_MUTATION = gql`
   mutation createAccountMutation($createAccountInput: CreateAccountInput!) {
@@ -82,9 +82,7 @@ function Signup() {
 
   return (
     <div className='flex h-screen flex-col items-center'>
-      <Helmet>
-        <title>Registrarse | Food Delivery</title>
-      </Helmet>
+      <Title text='Registrarse' />
       <div className='w-full max-w-lg rounded-lg bg-white py-20'>
         <div className='mb-8 px-10 text-center'>
           <Logo mode='vertical' />

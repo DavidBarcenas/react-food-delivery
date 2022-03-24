@@ -1,7 +1,6 @@
 import {Link} from 'react-router-dom';
 import {gql, useMutation} from '@apollo/client';
 import {useForm} from 'react-hook-form';
-import {Helmet} from 'react-helmet-async';
 import {loginMutation, loginMutationVariables} from '../types/loginMutation';
 import InputError from '../components/input-error';
 import Button from '../components/button';
@@ -9,6 +8,7 @@ import {emailRegex} from '../utils/validators';
 import {authToken, isLoggedInVar} from '../apollo';
 import {LOCAL_STORAGE_TOKEN} from '../constants';
 import Logo from '../components/logo';
+import Title from '../components/title';
 
 const LOGIN_MUTATION = gql`
   mutation loginMutation($loginInput: LoginInput!) {
@@ -57,9 +57,7 @@ function Login() {
 
   return (
     <div className='flex h-screen flex-col items-center'>
-      <Helmet>
-        <title>Iniciar sesión | Food Delivery</title>
-      </Helmet>
+      <Title text='Iniciar sesión' />
       <div className='w-full max-w-lg rounded-lg bg-white py-20'>
         <div className='mb-8 px-10 text-center'>
           <Logo mode='vertical' />

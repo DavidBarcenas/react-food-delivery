@@ -3,10 +3,10 @@ import Header from '../components/header';
 import Spinner from '../components/spinner';
 import {useProfile} from '../hooks/use-profile';
 import NotFound from '../pages/not-found';
-import Error from '../pages/error';
 import {UserRole} from '../types/globalTypes';
 import Restaurants from '../pages/clients/restaurants';
 import ConfirmEmail from '../pages/user/confirm-email';
+import Error from '../pages/error';
 
 const CLIENT_ROUTES = [
   {path: '/', element: <Restaurants />},
