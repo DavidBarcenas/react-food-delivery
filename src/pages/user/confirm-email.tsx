@@ -1,6 +1,7 @@
-import {gql, useMutation} from '@apollo/client';
+import {gql, useApolloClient, useMutation} from '@apollo/client';
 import {useEffect} from 'react';
 import {useLocation} from 'react-router-dom';
+import {useProfile} from '../../hooks/use-profile';
 import {verifyEmail, verifyEmailVariables} from '../../types/verifyEmail';
 
 const VERIFY_EMAIL_MUTATION = gql`
@@ -13,20 +14,41 @@ const VERIFY_EMAIL_MUTATION = gql`
 `;
 
 function ConfirmEmail() {
-  const [verifyEmail, {loading}] = useMutation<verifyEmail, verifyEmailVariables>(
-    VERIFY_EMAIL_MUTATION,
-  );
-  const locations = useLocation();
+  const [verifyEmail] = useMutation<verifyEmail, verifyEmailVariables>(VERIFY_EMAIL_MUTATION, {
+    onCompleted,
+  });
+  const client = useApolloClient();
+  const location = useLocation();
+  const {data: profile} = useProfile();
+
+  function onCompleted(response: verifyEmail) {
+    if (response.verifyEmail.ok && profile?.me?.id) {
+      client.writeFragment({
+        id: `User:${profile.me.id}`,
+        fragment: gql`
+          fragment VerifyEmail on User {
+            verifyEmail
+          }
+        `,
+        data: {
+          verifyEmail: true,
+        },
+      });
+    }
+  }
 
   useEffect(() => {
-    const [_, code] = location.search.split('?code=');
-    verifyEmail({
-      variables: {
-        input: {
-          code,
+    const code = location.search.split('?code=')[1];
+
+    if (code) {
+      verifyEmail({
+        variables: {
+          input: {
+            code,
+          },
         },
-      },
-    });
+      });
+    }
   }, []);
 
   return (
