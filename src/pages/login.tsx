@@ -56,14 +56,14 @@ function Login() {
   }
 
   return (
-    <div className='flex h-screen flex-col items-center'>
+    <div className='main-container'>
       <Title text='Iniciar sesión' />
-      <div className='w-full max-w-lg rounded-lg bg-white py-20'>
+      <div className='form-container'>
         <div className='mb-8 px-10 text-center'>
           <Logo mode='vertical' />
           <p className='mt-1'>Bienvenido de nuevo</p>
         </div>
-        <form onSubmit={handleSubmit(onSubmit)} className='mb-5 grid gap-5 px-10'>
+        <form onSubmit={handleSubmit(onSubmit)} className='form-content'>
           {loginMutationResult?.login.error && (
             <InputError className='text-center' message={loginMutationResult?.login.error} filled />
           )}

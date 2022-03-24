@@ -10,7 +10,7 @@ import Error from '../pages/error';
 
 const CLIENT_ROUTES = [
   {path: '/', element: <Restaurants />},
-  {path: '/my-profile', element: <h1>Mi Perfil</h1>},
+  {path: '/edit-profile', element: <h1>Mi Perfil</h1>},
   {path: '/confirm', element: <ConfirmEmail />},
   {path: '*', element: <NotFound />},
 ];
@@ -25,7 +25,7 @@ function LoggedInRouter() {
 
   if (!data || loading) {
     return (
-      <div className='flex h-screen items-center justify-center text-xl'>
+      <div className='main-container justify-center text-xl'>
         <Spinner className='text-lime-500' size='large' />
       </div>
     );
