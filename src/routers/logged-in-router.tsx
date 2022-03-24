@@ -6,10 +6,12 @@ import NotFound from '../pages/not-found';
 import Error from '../pages/error';
 import {UserRole} from '../types/globalTypes';
 import Restaurants from '../pages/clients/restaurants';
+import ConfirmEmail from '../pages/user/confirm-email';
 
 const CLIENT_ROUTES = [
   {path: '/', element: <Restaurants />},
   {path: '/my-profile', element: <h1>Mi Perfil</h1>},
+  {path: '/confirm', element: <ConfirmEmail />},
   {path: '*', element: <NotFound />},
 ];
 
