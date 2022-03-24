@@ -19,7 +19,7 @@ function Header() {
           <Link to='/'>
             <Logo />
           </Link>
-          <Link to='my-profile'>
+          <Link to='edit-profile'>
             <span className='material-icons'>person</span>
           </Link>
         </div>

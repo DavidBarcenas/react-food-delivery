@@ -7,10 +7,11 @@ import {UserRole} from '../types/globalTypes';
 import Restaurants from '../pages/clients/restaurants';
 import ConfirmEmail from '../pages/user/confirm-email';
 import Error from '../pages/error';
+import EditProfile from '../pages/user/edit-profile';
 
 const CLIENT_ROUTES = [
   {path: '/', element: <Restaurants />},
-  {path: '/edit-profile', element: <h1>Mi Perfil</h1>},
+  {path: '/edit-profile', element: <EditProfile />},
   {path: '/confirm', element: <ConfirmEmail />},
   {path: '*', element: <NotFound />},
 ];

@@ -9,7 +9,7 @@ function InputError({message, className, filled = false}: InputErrorProps) {
     <span
       className={`block w-full rounded-md text-sm text-danger-alert-color
         ${className || ''} 
-        ${filled ? 'bg-danger-alert py-2 font-medium' : 'ml-1 py-1'}`}>
+        ${filled ? 'mb-3 bg-danger-alert py-2 font-medium' : 'ml-1 py-1'}`}>
       {message}
     </span>
   );

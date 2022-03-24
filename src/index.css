@@ -14,7 +14,12 @@
 }
 
 .form-content {
-  @apply mb-5 grid gap-5 px-10;
+  @apply mb-5 px-10;
+}
+
+.form-content > div {
+  min-height: 60px;
+  margin-bottom: 0.5rem;
 }
 
 @tailwind utilities;

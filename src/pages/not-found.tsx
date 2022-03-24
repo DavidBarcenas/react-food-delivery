@@ -12,7 +12,7 @@ function NotFound() {
       <img src={notFoundImg} alt='404' className='mb-5 md:w-1/3' />
       <h2 className='mb-2 text-4xl font-bold'>404</h2>
       <h3 className='mb-5 text-3xl'>No encontramos lo que buscabas</h3>
-      <Button text='Ir al inicio' onClick={() => navigate('/')} />
+      <Button text='Ir al inicio' mode='normal' onClick={() => navigate('/')} />
     </div>
   );
 }
