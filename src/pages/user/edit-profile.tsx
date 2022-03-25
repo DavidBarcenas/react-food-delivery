@@ -1,4 +1,4 @@
-import {gql, useMutation} from '@apollo/client';
+import {gql, useApolloClient, useMutation} from '@apollo/client';
 import {useForm} from 'react-hook-form';
 import Button from '../../components/button';
 import InputError from '../../components/input-error';
@@ -22,26 +22,50 @@ interface EditProfileForm {
 }
 
 function EditProfile() {
-  const {data} = useProfile();
+  const client = useApolloClient();
+  const {data: profile} = useProfile();
   const [editProfile, {loading}] = useMutation<editProfile, editProfileVariables>(
     EDIT_PROFILE_MUTATION,
     {onCompleted},
   );
-  const {register, formState, handleSubmit} = useForm<EditProfileForm>({
+  const {register, formState, handleSubmit, getValues} = useForm<EditProfileForm>({
     defaultValues: {
-      email: data?.me?.email,
+      email: profile?.me?.email,
     },
   });
   const {email, password} = formState.errors;
 
   function onCompleted(data: editProfile) {
-    if (data.editProfile.ok) {
-      // update cache
+    if (data.editProfile.ok && profile) {
+      const prevEmail = profile.me?.email;
+      const newEmail = getValues().email;
+
+      if (prevEmail !== newEmail) {
+        client.writeFragment({
+          id: `User:${profile?.me?.id}`,
+          fragment: gql`
+            fragment EditedUser on User {
+              email
+              emailVerified
+            }
+          `,
+          data: {
+            email: newEmail,
+            emailVerified: false,
+          },
+        });
+      }
     }
   }
 
   function onSubmit(data: EditProfileForm) {
     const {email, password} = data;
+
+    if (email === profile?.me?.email && password === '') {
+      console.log('No debe ejecutarse');
+      return;
+    }
+
     editProfile({
       variables: {
         input: {
