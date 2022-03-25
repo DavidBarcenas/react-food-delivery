@@ -17,7 +17,7 @@ function Error({message}: ErrorProps) {
           ? {message}
           : `Upps! Lo sentimos, ocurrió un error. Por favor, intentalo más tarde.`}
       </h2>
-      <Button text='Aceptar' />
+      <Button text='Aceptar' mode='normal' />
     </div>
   );
 }

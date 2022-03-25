@@ -62,7 +62,6 @@ function EditProfile() {
     const {email, password} = data;
 
     if (email === profile?.me?.email && password === '') {
-      console.log('No debe ejecutarse');
       return;
     }
 
