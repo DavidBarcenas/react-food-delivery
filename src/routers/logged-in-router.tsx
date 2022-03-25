@@ -35,7 +35,7 @@ function LoggedInRouter() {
   return (
     <>
       <Header />
-      <div className='mx-auto w-full px-10'>{data.me?.role === UserRole.Client && routes}</div>
+      <div className='mx-auto w-full'>{data.me?.role === UserRole.Client && routes}</div>
     </>
   );
 }
