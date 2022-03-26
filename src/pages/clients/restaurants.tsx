@@ -77,10 +77,14 @@ function Restaurants() {
               </div>
             ))}
           </div>
-          <div className='grid grid-cols-4 gap-x-5 gap-y-6'>
+          <div className='grid grid-cols-2 gap-x-5 gap-y-6 md:grid-cols-4'>
             {data?.restaurants.results?.map(restaurant => (
               <div key={restaurant.id}>
-                <img src={restaurant.coverImage} alt={restaurant.name} className='mb-3' />
+                <img
+                  src={restaurant.coverImage}
+                  alt={restaurant.name}
+                  className='mb-3 h-[180px] w-full object-cover'
+                />
                 <h3 className='text-lg font-medium leading-none'>{restaurant.name}</h3>
                 <span className='text-sm leading-none text-gray-500'>Gourmet</span>
               </div>
