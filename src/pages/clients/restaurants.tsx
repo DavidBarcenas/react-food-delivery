@@ -3,6 +3,7 @@ import {useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {useNavigate} from 'react-router-dom';
 import Title from '../../components/title';
+import {RESTAURANT_FRAGMENT} from '../../fragments';
 import {
   restaurantsPageQuery,
   restaurantsPageQueryVariables,
@@ -27,17 +28,11 @@ const RESTAURANTS_QUERY = gql`
       totalPages
       totalResults
       results {
-        id
-        name
-        coverImage
-        category {
-          name
-        }
-        address
-        isPromoted
+        ...RestaurantFragment
       }
     }
   }
+  ${RESTAURANT_FRAGMENT}
 `;
 
 function Restaurants() {
