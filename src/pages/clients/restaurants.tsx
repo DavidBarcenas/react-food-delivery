@@ -1,4 +1,5 @@
 import {gql, useQuery} from '@apollo/client';
+import {useState} from 'react';
 import {
   restaurantsPageQuery,
   restaurantsPageQueryVariables,
@@ -37,21 +38,28 @@ const RESTAURANTS_QUERY = gql`
 `;
 
 function Restaurants() {
+  const [page, setPage] = useState(1);
   const {data, loading} = useQuery<restaurantsPageQuery, restaurantsPageQueryVariables>(
     RESTAURANTS_QUERY,
     {
       variables: {
         input: {
-          page: 1,
+          page,
         },
       },
     },
   );
 
-  console.log(data);
+  function nextPage() {
+    setPage(current => current + 1);
+  }
+
+  function prevPage() {
+    setPage(current => current - 1);
+  }
 
   return (
-    <div>
+    <div className='pb-20'>
       <div className='mb-7 w-full bg-gray-800 px-10 py-20'>
         <form className='m-auto w-5/12'>
           <input type='search' placeholder='Buscar un restaurante' className='input' />
@@ -77,7 +85,7 @@ function Restaurants() {
               </div>
             ))}
           </div>
-          <div className='grid grid-cols-2 gap-x-5 gap-y-6 md:grid-cols-4'>
+          <div className='mb-4 grid grid-cols-2 gap-x-5 gap-y-6 md:grid-cols-4'>
             {data?.restaurants.results?.map(restaurant => (
               <div key={restaurant.id}>
                 <img
@@ -86,9 +94,26 @@ function Restaurants() {
                   className='mb-3 h-[180px] w-full object-cover'
                 />
                 <h3 className='text-lg font-medium leading-none'>{restaurant.name}</h3>
-                <span className='text-sm leading-none text-gray-500'>Gourmet</span>
+                <span className='text-sm capitalize leading-none text-gray-500'>
+                  {restaurant.category?.name}
+                </span>
               </div>
             ))}
+          </div>
+          <div className='flex items-center justify-center'>
+            {page > 1 && (
+              <button onClick={prevPage}>
+                <span className='material-icons pt-1'>west</span>
+              </button>
+            )}
+            <span className='mx-8 text-sm text-gray-600'>
+              Página {page} de {data?.restaurants.totalPages}
+            </span>
+            {page !== data?.restaurants.totalPages && (
+              <button onClick={nextPage}>
+                <span className='material-icons pt-1'>east</span>
+              </button>
+            )}
           </div>
         </div>
       ) : null}
