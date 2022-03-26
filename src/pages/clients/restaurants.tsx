@@ -1,9 +1,9 @@
 import {gql, useQuery} from '@apollo/client';
 import {useState} from 'react';
 import {useForm} from 'react-hook-form';
-import {useNavigate} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import Title from '../../components/title';
-import {RESTAURANT_FRAGMENT} from '../../fragments';
+import {CATEGORY_FRAGMENT, RESTAURANT_FRAGMENT} from '../../fragments';
 import {
   restaurantsPageQuery,
   restaurantsPageQueryVariables,
@@ -15,11 +15,7 @@ const RESTAURANTS_QUERY = gql`
       ok
       error
       categories {
-        id
-        name
-        coverImage
-        slug
-        restaurantCount
+        ...CategoryFragment
       }
     }
     restaurants(input: $input) {
@@ -33,6 +29,7 @@ const RESTAURANTS_QUERY = gql`
     }
   }
   ${RESTAURANT_FRAGMENT}
+  ${CATEGORY_FRAGMENT}
 `;
 
 function Restaurants() {
@@ -79,7 +76,8 @@ function Restaurants() {
         <div className='px-10'>
           <div className='mb-10 flex justify-center'>
             {data?.allCategories.categories?.map(category => (
-              <div
+              <Link
+                to={`category/${category.slug}`}
                 key={category.id}
                 className='group mx-2 min-w-[80px] max-w-fit cursor-pointer text-center'>
                 {category.coverImage && (
@@ -92,7 +90,7 @@ function Restaurants() {
                 <span className='text-sm font-medium capitalize text-gray-600'>
                   {category.name}
                 </span>
-              </div>
+              </Link>
             ))}
           </div>
           <div className='mb-8 grid grid-cols-2 gap-x-5 gap-y-6 md:grid-cols-4'>

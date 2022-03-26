@@ -17,6 +17,11 @@ export interface AllRestaurantsInput {
   page?: number | null;
 }
 
+export interface CategoryInput {
+  page?: number | null;
+  slug: string;
+}
+
 export interface CreateAccountInput {
   email: string;
   password: string;
