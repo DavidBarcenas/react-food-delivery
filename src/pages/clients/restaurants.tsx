@@ -1,5 +1,8 @@
 import {gql, useQuery} from '@apollo/client';
 import {useState} from 'react';
+import {useForm} from 'react-hook-form';
+import {useNavigate} from 'react-router-dom';
+import Title from '../../components/title';
 import {
   restaurantsPageQuery,
   restaurantsPageQueryVariables,
@@ -38,6 +41,8 @@ const RESTAURANTS_QUERY = gql`
 `;
 
 function Restaurants() {
+  const {register, handleSubmit} = useForm<{q: string}>();
+  const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const {data, loading} = useQuery<restaurantsPageQuery, restaurantsPageQueryVariables>(
     RESTAURANTS_QUERY,
@@ -50,6 +55,10 @@ function Restaurants() {
     },
   );
 
+  function submitForm({q}: {q: string}) {
+    navigate({pathname: '/search', search: `?q=${q}`});
+  }
+
   function nextPage() {
     setPage(current => current + 1);
   }
@@ -60,9 +69,15 @@ function Restaurants() {
 
   return (
     <div className='pb-20'>
+      <Title text='Inicio' />
       <div className='mb-7 w-full bg-gray-800 px-10 py-20'>
-        <form className='m-auto w-5/12'>
-          <input type='search' placeholder='Buscar un restaurante' className='input' />
+        <form className='m-auto w-5/12' onSubmit={handleSubmit(submitForm)} autoComplete='off'>
+          <input
+            type='search'
+            placeholder='Buscar un restaurante'
+            className='input'
+            {...register('q', {required: true})}
+          />
         </form>
       </div>
       {!loading ? (
@@ -85,7 +100,7 @@ function Restaurants() {
               </div>
             ))}
           </div>
-          <div className='mb-4 grid grid-cols-2 gap-x-5 gap-y-6 md:grid-cols-4'>
+          <div className='mb-8 grid grid-cols-2 gap-x-5 gap-y-6 md:grid-cols-4'>
             {data?.restaurants.results?.map(restaurant => (
               <div key={restaurant.id}>
                 <img

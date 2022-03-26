@@ -8,11 +8,13 @@ import Restaurants from '../pages/clients/restaurants';
 import ConfirmEmail from '../pages/user/confirm-email';
 import Error from '../pages/error';
 import EditProfile from '../pages/user/edit-profile';
+import Search from '../pages/clients/search';
 
 const CLIENT_ROUTES = [
   {path: '/', element: <Restaurants />},
   {path: '/edit-profile', element: <EditProfile />},
   {path: '/confirm', element: <ConfirmEmail />},
+  {path: '/search', element: <Search />},
   {path: '*', element: <NotFound />},
 ];
 
