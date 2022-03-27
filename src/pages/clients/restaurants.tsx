@@ -3,6 +3,7 @@ import {useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {Link, useNavigate} from 'react-router-dom';
 import Pagination from '../../components/pagination';
+import RestaurantsGrid from '../../components/restaurants-grid';
 import Title from '../../components/title';
 import {CATEGORY_FRAGMENT, RESTAURANT_FRAGMENT} from '../../fragments';
 import {
@@ -94,21 +95,7 @@ function Restaurants() {
               </Link>
             ))}
           </div>
-          <div className='mb-8 grid grid-cols-2 gap-x-5 gap-y-6 md:grid-cols-4'>
-            {data?.restaurants.results?.map(restaurant => (
-              <div key={restaurant.id}>
-                <img
-                  src={restaurant.coverImage}
-                  alt={restaurant.name}
-                  className='mb-3 h-[180px] w-full object-cover'
-                />
-                <h3 className='text-lg font-medium leading-none'>{restaurant.name}</h3>
-                <span className='text-sm capitalize leading-none text-gray-500'>
-                  {restaurant.category?.name}
-                </span>
-              </div>
-            ))}
-          </div>
+          <RestaurantsGrid restaurants={data?.restaurants.results} />
           <Pagination
             currentPage={page}
             totalPages={data?.restaurants.totalPages}
