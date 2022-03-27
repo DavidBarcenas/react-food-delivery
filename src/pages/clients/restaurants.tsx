@@ -2,6 +2,7 @@ import {gql, useQuery} from '@apollo/client';
 import {useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {Link, useNavigate} from 'react-router-dom';
+import Pagination from '../../components/pagination';
 import Title from '../../components/title';
 import {CATEGORY_FRAGMENT, RESTAURANT_FRAGMENT} from '../../fragments';
 import {
@@ -108,21 +109,12 @@ function Restaurants() {
               </div>
             ))}
           </div>
-          <div className='flex items-center justify-center'>
-            {page > 1 && (
-              <button onClick={prevPage}>
-                <span className='material-icons pt-1'>west</span>
-              </button>
-            )}
-            <span className='mx-8 text-sm text-gray-600'>
-              Página {page} de {data?.restaurants.totalPages}
-            </span>
-            {page !== data?.restaurants.totalPages && (
-              <button onClick={nextPage}>
-                <span className='material-icons pt-1'>east</span>
-              </button>
-            )}
-          </div>
+          <Pagination
+            currentPage={page}
+            totalPages={data?.restaurants.totalPages}
+            prevPage={prevPage}
+            nextPage={nextPage}
+          />
         </div>
       ) : null}
     </div>
