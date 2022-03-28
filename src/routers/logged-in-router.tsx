@@ -10,6 +10,7 @@ import Error from '../pages/error';
 import EditProfile from '../pages/user/edit-profile';
 import Search from '../pages/clients/search';
 import Category from '../pages/clients/category';
+import Restaurant from '../pages/clients/restaurant';
 
 const CLIENT_ROUTES = [
   {path: '/', element: <Restaurants />},
@@ -17,6 +18,7 @@ const CLIENT_ROUTES = [
   {path: '/confirm', element: <ConfirmEmail />},
   {path: '/search', element: <Search />},
   {path: '/category/:slug', element: <Category />},
+  {path: '/restaurant/:id', element: <Restaurant />},
   {path: '*', element: <NotFound />},
 ];
 

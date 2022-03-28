@@ -1,8 +1,9 @@
+import {Link} from 'react-router-dom';
 import {restaurantsPageQuery_restaurants_results} from '../types/RestaurantsPageQuery';
 
 function RestaurantCard(restaurant: restaurantsPageQuery_restaurants_results) {
   return (
-    <div>
+    <Link to={`/restaurant/${restaurant.id}`}>
       <img
         src={restaurant.coverImage}
         alt={restaurant.name}
@@ -12,7 +13,7 @@ function RestaurantCard(restaurant: restaurantsPageQuery_restaurants_results) {
       <span className='text-sm capitalize leading-none text-gray-500'>
         {restaurant.category?.name}
       </span>
-    </div>
+    </Link>
   );
 }
 
