@@ -1,5 +1,6 @@
 import {gql, useQuery} from '@apollo/client';
 import {useParams} from 'react-router-dom';
+import Spinner from '../../components/spinner';
 import {RESTAURANT_FRAGMENT} from '../../fragments';
 import {restaurant, restaurantVariables} from '../../types/restaurant';
 
@@ -9,7 +10,6 @@ const RESTAURANT_QUERY = gql`
       ok
       error
       restaurant {
-        menu
         ...RestaurantFragment
       }
     }
@@ -26,7 +26,32 @@ function Restaurant() {
       },
     },
   });
-  return <div>Restaurant</div>;
+
+  if (loading) {
+    return (
+      <div className='main-container justify-center text-xl'>
+        <Spinner className='text-lime-500' size='large' />
+      </div>
+    );
+  }
+
+  return (
+    <div className='main-container'>
+      <div
+        className='flex h-72 w-full items-center bg-cover bg-center'
+        style={{backgroundImage: `url(${data?.restaurant.restaurant?.coverImage})`}}>
+        <div className='w-80 bg-white px-12 py-5'>
+          <h2 className='text-2xl font-medium'>{data?.restaurant.restaurant?.name}</h2>
+          <span className='mb-2 block capitalize text-gray-800'>
+            {data?.restaurant.restaurant?.category?.name}
+          </span>
+          <address className='text-sm text-gray-700'>
+            {data?.restaurant.restaurant?.address}
+          </address>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default Restaurant;
