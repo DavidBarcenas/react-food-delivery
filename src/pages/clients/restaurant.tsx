@@ -1,6 +1,7 @@
 import {gql, useQuery} from '@apollo/client';
 import {useParams} from 'react-router-dom';
 import Spinner from '../../components/spinner';
+import Title from '../../components/title';
 import {RESTAURANT_FRAGMENT} from '../../fragments';
 import {restaurant, restaurantVariables} from '../../types/restaurant';
 
@@ -37,10 +38,11 @@ function Restaurant() {
 
   return (
     <div className='main-container'>
+      <Title text={data?.restaurant.restaurant?.name || ''} />
       <div
         className='flex h-72 w-full items-center bg-cover bg-center'
         style={{backgroundImage: `url(${data?.restaurant.restaurant?.coverImage})`}}>
-        <div className='w-80 bg-white px-12 py-5'>
+        <div className='w-80 bg-white px-12 py-5 shadow-xl'>
           <h2 className='text-2xl font-medium'>{data?.restaurant.restaurant?.name}</h2>
           <span className='mb-2 block capitalize text-gray-800'>
             {data?.restaurant.restaurant?.category?.name}
