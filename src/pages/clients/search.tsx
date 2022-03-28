@@ -1,6 +1,7 @@
 import {gql, useLazyQuery} from '@apollo/client';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
+import RestaurantsGrid from '../../components/restaurants-grid';
 import Title from '../../components/title';
 import {RESTAURANT_FRAGMENT} from '../../fragments';
 import {searchRestaurant, searchRestaurantVariables} from '../../types/searchRestaurant';
@@ -23,7 +24,8 @@ const SEARCH_RESTAURANT = gql`
 function Search() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [lazySearchRestaurant] = useLazyQuery<searchRestaurant, searchRestaurantVariables>(
+  const [search, setSearch] = useState('');
+  const [lazySearchRestaurant, {data}] = useLazyQuery<searchRestaurant, searchRestaurantVariables>(
     SEARCH_RESTAURANT,
   );
 
@@ -34,13 +36,15 @@ function Search() {
       return navigate('/', {replace: true});
     }
 
+    setSearch(query);
     lazySearchRestaurant({variables: {input: {page: 1, query}}});
   }, []);
 
   return (
-    <div>
-      <Title text='Búsqueda' />
-      Search
+    <div className='px-10'>
+      <Title text={search.trim() === '' ? 'Búsqueda' : search} />
+      <b className='mb-5 block py-5 text-center text-3xl font-normal'>"{search}"</b>
+      <RestaurantsGrid restaurants={data?.searchRestaurant.restaurants} />
     </div>
   );
 }
