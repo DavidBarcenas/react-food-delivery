@@ -9,7 +9,13 @@ function RestaurantsGrid({restaurants}: RestaurantsGridProps) {
   return restaurants && restaurants.length > 0 ? (
     <div className='mb-8 grid grid-cols-2 gap-x-5 gap-y-6 md:grid-cols-4'>
       {restaurants.map(restaurant => (
-        <RestaurantCard {...restaurant} key={restaurant.id} />
+        <RestaurantCard
+          id={restaurant.id}
+          name={restaurant.name}
+          coverImage={restaurant.coverImage}
+          categoryName={restaurant.category?.name || ''}
+          key={restaurant.id}
+        />
       ))}
     </div>
   ) : null;
