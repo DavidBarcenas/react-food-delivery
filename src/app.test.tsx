@@ -16,15 +16,13 @@ jest.mock('./routers/logged-in-router', () => {
   };
 });
 
-describe('<App />', () => {
-  it('renders LoggedOutRouter', () => {
-    const {getByText} = render(<App />);
-    getByText('LoggedOutRouter');
-  });
+it('render LoggedOutRouter when user is not authenticated', () => {
+  const {getByText} = render(<App />);
+  expect(getByText('LoggedOutRouter')).toBeInTheDocument();
+});
 
-  it('renders LoggedInRouter', async () => {
-    const {getByText} = render(<App />);
-    await waitFor(() => isLoggedInVar(true));
-    getByText('LoggedInRouter');
-  });
+it('render LoggedInRouter when user is authenticated', async () => {
+  const {getByText} = render(<App />);
+  await waitFor(() => isLoggedInVar(true));
+  expect(getByText('LoggedInRouter')).toBeInTheDocument();
 });
