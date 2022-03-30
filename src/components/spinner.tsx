@@ -11,6 +11,7 @@ function Spinner({className, size = 'normal'}: Spinner) {
         className={`-ml-1 mr-3 animate-spin ${classSize} ${className || ''}`}
         xmlns='http://www.w3.org/2000/svg'
         fill='none'
+        data-testid='spinner'
         viewBox='0 0 24 24'>
         <circle
           className='opacity-25'
