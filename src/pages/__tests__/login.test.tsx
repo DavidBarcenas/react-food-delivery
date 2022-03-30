@@ -27,7 +27,7 @@ it('render correctly', async () => {
   await waitFor(() => expect(document.title).toBe('Iniciar sesión | Food Delivery'));
 });
 
-it('display email validation errors', async () => {
+it('displays email validation errors', async () => {
   const emailInput = screen.getByPlaceholderText(/correo electrónico/i);
   const submitButton = screen.getByRole('button');
   await waitFor(() => {
@@ -44,7 +44,7 @@ it('display email validation errors', async () => {
   expect(errorMessage[0]).toHaveTextContent(/el correo es requerido/i);
 });
 
-it('display password validation errors', async () => {
+it('displays password validation errors', async () => {
   const emailInput = screen.getByPlaceholderText(/correo electrónico/i);
   const passwordInput = screen.getByPlaceholderText(/contraseña/i);
   const submitButton = screen.getByRole('button');
@@ -83,7 +83,7 @@ it('submit form and retrieve token', async () => {
     },
   });
   mockClient.setRequestHandler(LOGIN_MUTATION, mockMutationResponse);
-
+  jest.spyOn(Storage.prototype, 'setItem');
   await waitFor(() => {
     user.type(emailInput, formData.email);
     user.type(passwordInput, formData.password);
@@ -96,4 +96,34 @@ it('submit form and retrieve token', async () => {
       password: formData.password,
     },
   });
+  expect(localStorage.setItem).toHaveBeenCalledTimes(1);
+  expect(localStorage.setItem).toHaveBeenCalledWith('fd-token', 'fake-token');
+});
+
+it('renders an error message from the server', async () => {
+  const emailInput = screen.getByPlaceholderText(/correo electrónico/i);
+  const passwordInput = screen.getByPlaceholderText(/contraseña/i);
+  const submitButton = screen.getByRole('button');
+  const formData = {
+    email: 'fake@mail.com',
+    password: '123456',
+  };
+  const mockMutationResponse = jest.fn().mockResolvedValue({
+    data: {
+      login: {
+        ok: false,
+        token: null,
+        error: 'user not found',
+      },
+      loading: false,
+    },
+  });
+  mockClient.setRequestHandler(LOGIN_MUTATION, mockMutationResponse);
+  await waitFor(() => {
+    user.type(emailInput, formData.email);
+    user.type(passwordInput, formData.password);
+    user.click(submitButton);
+  });
+  const errorMessage = await screen.findByRole('alert');
+  expect(errorMessage).toHaveTextContent(/user not found/i);
 });
