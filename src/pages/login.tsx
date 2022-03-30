@@ -10,7 +10,7 @@ import {LOCAL_STORAGE_TOKEN} from '../constants';
 import Logo from '../components/logo';
 import Title from '../components/title';
 
-const LOGIN_MUTATION = gql`
+export const LOGIN_MUTATION = gql`
   mutation loginMutation($loginInput: LoginInput!) {
     login(input: $loginInput) {
       ok
