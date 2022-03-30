@@ -2,12 +2,12 @@ import {restaurantsPageQuery_restaurants_results} from '../types/RestaurantsPage
 import RestaurantCard from './restaurant-card';
 
 interface RestaurantsGridProps {
-  restaurants: restaurantsPageQuery_restaurants_results[] | null | undefined;
+  restaurants: Omit<restaurantsPageQuery_restaurants_results, '__typename'>[] | null | undefined;
 }
 
 function RestaurantsGrid({restaurants}: RestaurantsGridProps) {
   return restaurants && restaurants.length > 0 ? (
-    <div className='mb-8 grid grid-cols-2 gap-x-5 gap-y-6 md:grid-cols-4'>
+    <div className='mb-8 grid grid-cols-2 gap-x-5 gap-y-6 md:grid-cols-4' id='restaurants-grid'>
       {restaurants.map(restaurant => (
         <RestaurantCard
           id={restaurant.id}
