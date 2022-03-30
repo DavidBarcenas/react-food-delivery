@@ -7,6 +7,7 @@ interface InputErrorProps {
 function InputError({message, className, filled = false}: InputErrorProps) {
   return (
     <span
+      role='alert'
       className={`block w-full rounded-md text-sm text-danger-alert-color
         ${className || ''} 
         ${filled ? 'mb-3 bg-danger-alert py-2 font-medium' : 'ml-1 py-1'}`}>
