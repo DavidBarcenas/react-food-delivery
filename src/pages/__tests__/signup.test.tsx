@@ -6,6 +6,16 @@ import {customRender} from '../../__fixtures__/utils';
 import Signup, {CREATE_ACCOUNT_MUTATION} from '../signup';
 import {UserRole} from '../../types/globalTypes';
 
+const mockNavigate = jest.fn();
+
+jest.mock('react-router-dom', () => {
+  const realModule = jest.requireActual('react-router-dom');
+  return {
+    ...realModule,
+    useNavigate: () => mockNavigate,
+  };
+});
+
 let mockClient: MockApolloClient;
 
 function getFields() {
@@ -24,6 +34,8 @@ beforeEach(() => {
     </ApolloProvider>,
   );
 });
+
+afterAll(() => jest.clearAllMocks());
 
 it('render title correctly', async () => {
   expect(screen.getByText(/¡empecemos!/i)).toBeInTheDocument();
@@ -81,7 +93,9 @@ it('create account', async () => {
     },
   });
   // Testeamos el error aquí para no copiar todo este test
-  // y solo setear el error. También, falta validar en la página
-  // que si el estatus es OK no debe mostrarse el error.
+  // y solo setear el error. También, falta validar en el componente
+  // que si OK es true no debe mostrarse el error.
   expect(screen.getByRole('alert')).toHaveTextContent('test error');
+  expect(mockNavigate).toHaveBeenCalledTimes(1);
+  expect(mockNavigate).toHaveBeenCalledWith('/');
 });
