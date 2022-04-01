@@ -2,29 +2,12 @@ import {useRoutes} from 'react-router-dom';
 import Header from '../components/header';
 import Spinner from '../components/spinner';
 import {useProfile} from '../hooks/use-profile';
-import NotFound from '../pages/not-found';
-import {UserRole} from '../types/globalTypes';
-import Restaurants from '../pages/clients/restaurants';
-import ConfirmEmail from '../pages/user/confirm-email';
 import Error from '../pages/error';
-import EditProfile from '../pages/user/edit-profile';
-import Search from '../pages/clients/search';
-import Category from '../pages/clients/category';
-import Restaurant from '../pages/clients/restaurant';
-
-const CLIENT_ROUTES = [
-  {path: '/', element: <Restaurants />},
-  {path: '/edit-profile', element: <EditProfile />},
-  {path: '/confirm', element: <ConfirmEmail />},
-  {path: '/search', element: <Search />},
-  {path: '/category/:slug', element: <Category />},
-  {path: '/restaurant/:id', element: <Restaurant />},
-  {path: '*', element: <NotFound />},
-];
+import {routes} from './routes';
 
 function LoggedInRouter() {
   const {data, loading, error} = useProfile();
-  const routes = useRoutes(CLIENT_ROUTES);
+  const router = useRoutes(routes(data?.me?.role));
 
   if (!!error) {
     return <Error />;
@@ -41,7 +24,7 @@ function LoggedInRouter() {
   return (
     <>
       <Header />
-      <div className='mx-auto w-full'>{data.me?.role === UserRole.Client && routes}</div>
+      <div className='mx-auto w-full'>{router}</div>
     </>
   );
 }
