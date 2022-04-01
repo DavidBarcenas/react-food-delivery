@@ -57,13 +57,6 @@ describe('signup', () => {
       .click();
     user.wait(1000);
     user.title().should('eq', 'Iniciar sesión | Food Delivery');
-    user
-      .get(emailInput)
-      .type('test@mail.com')
-      .get(passwordInput)
-      .type('secret')
-      .get(submitButton)
-      .click();
-    user.window().its('localStorage.fd-token').should('be.a', 'string');
+    user.login('test@mail.com', 'secret');
   });
 });

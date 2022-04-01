@@ -24,3 +24,18 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 import '@testing-library/cypress/add-commands';
+
+Cypress.Commands.add('assertLoggedIn', () => {
+  cy.window().its('localStorage.fd-token').should('be.a', 'string');
+});
+
+Cypress.Commands.add('login', (email: string, password: string) => {
+  cy.visit('/');
+  cy.get('input[name=email]')
+    .type(email)
+    .get('input[name=password]')
+    .type(password)
+    .get('button[type=submit]')
+    .click();
+  cy.assertLoggedIn();
+});

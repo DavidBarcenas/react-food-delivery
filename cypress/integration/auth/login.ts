@@ -29,14 +29,6 @@ describe('login', () => {
   });
 
   it('get the token and access', () => {
-    user
-      .visit('/')
-      .get(emailInput)
-      .type('test@mail.com')
-      .get(passwordInput)
-      .type('secret')
-      .get(submitButton)
-      .click();
-    user.window().its('localStorage.fd-token').should('be.a', 'string');
+    user.login('test@mail.com', 'secret');
   });
 });
