@@ -34,13 +34,7 @@ describe('signup', () => {
       if (operationName === 'createAccountMutation') {
         request.reply(res => {
           res.send({
-            data: {
-              createAccount: {
-                ok: true,
-                error: null,
-                __typename: 'CreateAccountOutput',
-              },
-            },
+            fixtures: 'auth/signup.json',
           });
         });
       }
