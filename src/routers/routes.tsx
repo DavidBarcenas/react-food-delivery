@@ -3,6 +3,7 @@ import Restaurant from '../pages/clients/restaurant';
 import Restaurants from '../pages/clients/restaurants';
 import Search from '../pages/clients/search';
 import NotFound from '../pages/not-found';
+import AddRestaurant from '../pages/owner/add-restaurant';
 import MyRestaurants from '../pages/owner/my-restaurants';
 import ConfirmEmail from '../pages/user/confirm-email';
 import EditProfile from '../pages/user/edit-profile';
@@ -21,7 +22,10 @@ const CLIENT_ROUTES = [
   {path: '/restaurant/:id', element: <Restaurant />},
 ];
 
-const OWNER_ROUTES = [{path: '/', element: <MyRestaurants />}];
+const OWNER_ROUTES = [
+  {path: '/', element: <MyRestaurants />},
+  {path: '/add-restaurant', element: <AddRestaurant />},
+];
 
 export function routes(role: string | undefined) {
   let showRoutes = COMMON_ROUTES;

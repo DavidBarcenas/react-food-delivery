@@ -2,6 +2,7 @@ import {gql, useQuery} from '@apollo/client';
 import {Link, useNavigate} from 'react-router-dom';
 import Button from '../../components/button';
 import RestaurantsGrid from '../../components/restaurants-grid';
+import Title from '../../components/title';
 import {RESTAURANT_FRAGMENT} from '../../fragments';
 import {myRestaurants} from '../../types/myRestaurants';
 
@@ -29,6 +30,7 @@ function MyRestaurants() {
   return (
     <section>
       <header className='flex justify-between p-10'>
+        <Title text='Mis restaurantes' />
         <h2 className='text-2xl font-medium'>Mis restaurantes</h2>
         <Button text='Agregar' mode='normal' onClick={goToAddRestaurant} />
       </header>
