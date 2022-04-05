@@ -6,7 +6,7 @@ import Title from '../../components/title';
 import {RESTAURANT_FRAGMENT} from '../../fragments';
 import {myRestaurants} from '../../types/myRestaurants';
 
-const MY_RESTAURANTS_QUERY = gql`
+export const MY_RESTAURANTS_QUERY = gql`
   query myRestaurants {
     myRestaurants {
       ok

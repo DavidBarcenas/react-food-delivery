@@ -12,6 +12,7 @@ import {UserRole} from '../types/globalTypes';
 const COMMON_ROUTES = [
   {path: '/edit-profile', element: <EditProfile />},
   {path: '/confirm', element: <ConfirmEmail />},
+  {path: '/restaurant/:id', element: <Restaurant />},
   {path: '*', element: <NotFound />},
 ];
 
@@ -19,7 +20,6 @@ const CLIENT_ROUTES = [
   {path: '/', element: <Restaurants />},
   {path: '/search', element: <Search />},
   {path: '/category/:slug', element: <Category />},
-  {path: '/restaurant/:id', element: <Restaurant />},
 ];
 
 const OWNER_ROUTES = [

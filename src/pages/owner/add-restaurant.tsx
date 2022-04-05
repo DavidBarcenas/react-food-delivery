@@ -1,16 +1,18 @@
-import {gql, useMutation} from '@apollo/client';
+import {gql, useApolloClient, useMutation} from '@apollo/client';
 import {useForm} from 'react-hook-form';
 import {useNavigate} from 'react-router-dom';
 import Button from '../../components/button';
 import InputError from '../../components/input-error';
 import Title from '../../components/title';
 import {createRestaurant, createRestaurantVariables} from '../../types/createRestaurant';
+import {MY_RESTAURANTS_QUERY} from './my-restaurants';
 
 const CREATE_RESTAURANT_MUTATION = gql`
   mutation createRestaurant($input: CreateRestaurantInput!) {
     createRestaurant(input: $input) {
       error
       ok
+      restaurantId
     }
   }
 `;
@@ -23,8 +25,9 @@ interface CreateRestaurantForm {
 }
 
 function AddRestaurant() {
+  const client = useApolloClient();
   const navigate = useNavigate();
-  const {register, handleSubmit, formState} = useForm<CreateRestaurantForm>();
+  const {register, handleSubmit, formState, getValues} = useForm<CreateRestaurantForm>();
   const {name, address, categoryName} = formState.errors;
   const [createRestaurantMutation, {loading, data}] = useMutation<
     createRestaurant,
@@ -32,7 +35,33 @@ function AddRestaurant() {
   >(CREATE_RESTAURANT_MUTATION, {onCompleted});
 
   function onCompleted(data: createRestaurant) {
+    const {name, address, categoryName, coverImage} = getValues();
     if (data.createRestaurant.ok) {
+      const queryResult = client.readQuery({query: MY_RESTAURANTS_QUERY});
+      client.writeQuery({
+        query: MY_RESTAURANTS_QUERY,
+        data: {
+          myRestaurants: {
+            __typename: 'MyRestaurantsOutput',
+            ...queryResult.myRestaurants,
+            restaurants: [
+              {
+                address,
+                category: {
+                  name: categoryName,
+                  __typename: 'Category',
+                },
+                coverImage,
+                id: data.createRestaurant.restaurantId,
+                isPromoted: false,
+                name,
+                __typename: 'Restaurant',
+              },
+              ...queryResult.myRestaurants.restaurants,
+            ],
+          },
+        },
+      });
       navigate('/');
     }
   }
