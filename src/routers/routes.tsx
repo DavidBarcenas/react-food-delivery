@@ -3,6 +3,7 @@ import Restaurant from '../pages/clients/restaurant';
 import Restaurants from '../pages/clients/restaurants';
 import Search from '../pages/clients/search';
 import NotFound from '../pages/not-found';
+import AddDish from '../pages/owner/add-dish';
 import AddRestaurant from '../pages/owner/add-restaurant';
 import MyRestaurant from '../pages/owner/my-restaurant';
 import MyRestaurants from '../pages/owner/my-restaurants';
@@ -27,6 +28,7 @@ const OWNER_ROUTES = [
   {path: '/', element: <MyRestaurants />},
   {path: '/add-restaurant', element: <AddRestaurant />},
   {path: '/restaurant/:id', element: <MyRestaurant />},
+  {path: '/restaurant/:id/add-dish', element: <AddDish />},
 ];
 
 export function routes(role: string | undefined) {
