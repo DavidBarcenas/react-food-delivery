@@ -1,7 +1,7 @@
 import {gql, useQuery} from '@apollo/client';
 import {Link, useParams} from 'react-router-dom';
-import {VictoryBar, VictoryChart} from 'victory';
-import {DISH_FRAGMENT, RESTAURANT_FRAGMENT} from '../../fragments';
+import {VictoryAxis, VictoryChart, VictoryLine, VictoryVoronoiContainer} from 'victory';
+import {DISH_FRAGMENT, ORDERS_FRAGMENT, RESTAURANT_FRAGMENT} from '../../fragments';
 import {myRestaurant, myRestaurantVariables} from '../../types/myRestaurant';
 
 export const MY_RESTAURANT_QUERY = gql`
@@ -14,19 +14,16 @@ export const MY_RESTAURANT_QUERY = gql`
         menu {
           ...DishFragment
         }
+        orders {
+          ...OrderFragment
+        }
       }
     }
   }
   ${RESTAURANT_FRAGMENT}
   ${DISH_FRAGMENT}
+  ${ORDERS_FRAGMENT}
 `;
-
-const fakeData = [
-  {quarter: 1, earnings: 13000},
-  {quarter: 2, earnings: 16500},
-  {quarter: 3, earnings: 14250},
-  {quarter: 4, earnings: 19000},
-];
 
 function MyRestaurant() {
   const {id} = useParams();
@@ -72,9 +69,19 @@ function MyRestaurant() {
           ))}
           <div className='text-center'>
             <h4>Ventas</h4>
-            <div className='m-auto max-w-sm'>
-              <VictoryChart>
-                <VictoryBar data={fakeData} x='quarter' y='earnings' />
+            <div className='m-auto w-3/4'>
+              <VictoryChart
+                width={window.innerWidth}
+                height={400}
+                containerComponent={<VictoryVoronoiContainer />}>
+                <VictoryLine
+                  data={data?.myRestaurant.restaurant?.orders.map(order => ({
+                    x: order.createdAt,
+                    y: order.total,
+                  }))}
+                />
+                <VictoryAxis tickFormat={tick => `$${tick}`} dependentAxis />
+                <VictoryAxis tickFormat={tick => new Date(tick).toLocaleDateString('mx')} />
               </VictoryChart>
             </div>
           </div>
