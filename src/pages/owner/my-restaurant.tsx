@@ -1,5 +1,6 @@
 import {gql, useQuery} from '@apollo/client';
 import {Link, useParams} from 'react-router-dom';
+import {VictoryBar, VictoryChart} from 'victory';
 import {DISH_FRAGMENT, RESTAURANT_FRAGMENT} from '../../fragments';
 import {myRestaurant, myRestaurantVariables} from '../../types/myRestaurant';
 
@@ -19,6 +20,13 @@ export const MY_RESTAURANT_QUERY = gql`
   ${RESTAURANT_FRAGMENT}
   ${DISH_FRAGMENT}
 `;
+
+const fakeData = [
+  {quarter: 1, earnings: 13000},
+  {quarter: 2, earnings: 16500},
+  {quarter: 3, earnings: 14250},
+  {quarter: 4, earnings: 19000},
+];
 
 function MyRestaurant() {
   const {id} = useParams();
@@ -57,7 +65,21 @@ function MyRestaurant() {
       </div>
       {data?.myRestaurant.restaurant?.menu.length === 0 ? (
         <div className='text-center'>Agrega tu primer platillo</div>
-      ) : null}
+      ) : (
+        <div>
+          {data?.myRestaurant.restaurant?.menu.map(dish => (
+            <h2 key={dish.id}>{dish.name}</h2>
+          ))}
+          <div className='text-center'>
+            <h4>Ventas</h4>
+            <div className='m-auto max-w-sm'>
+              <VictoryChart>
+                <VictoryBar data={fakeData} x='quarter' y='earnings' />
+              </VictoryChart>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
