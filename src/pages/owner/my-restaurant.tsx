@@ -3,7 +3,7 @@ import {Link, useParams} from 'react-router-dom';
 import {DISH_FRAGMENT, RESTAURANT_FRAGMENT} from '../../fragments';
 import {myRestaurant, myRestaurantVariables} from '../../types/myRestaurant';
 
-const MY_RESTAURANT_QUERY = gql`
+export const MY_RESTAURANT_QUERY = gql`
   query myRestaurant($input: MyRestaurantInput!) {
     myRestaurant(input: $input) {
       ok
