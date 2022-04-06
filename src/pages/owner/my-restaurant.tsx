@@ -29,7 +29,7 @@ function MyRestaurant() {
       },
     },
   });
-  console.log(data);
+
   return (
     <div>
       <div
