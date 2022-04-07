@@ -1,8 +1,11 @@
 import {gql, useQuery} from '@apollo/client';
+import {useState} from 'react';
 import {useParams} from 'react-router-dom';
+import Button from '../../components/button';
 import Spinner from '../../components/spinner';
 import Title from '../../components/title';
 import {DISH_FRAGMENT, RESTAURANT_FRAGMENT} from '../../fragments';
+import {CreateOrderItemInput} from '../../types/globalTypes';
 import {restaurant, restaurantVariables} from '../../types/restaurant';
 
 const RESTAURANT_QUERY = gql`
@@ -22,8 +25,19 @@ const RESTAURANT_QUERY = gql`
   ${DISH_FRAGMENT}
 `;
 
+const CREATE_ORDER_MUTATION = gql`
+  mutation createOrder($input: CreateOrderInput!) {
+    createOrder(input: $input) {
+      ok
+      error
+    }
+  }
+`;
+
 function Restaurant() {
   const params = useParams<{id: string}>();
+  const [orderStarted, setOrderStarted] = useState(false);
+  const [orderItems, setOrderItems] = useState<CreateOrderItemInput[]>([]);
   const {data, loading} = useQuery<restaurant, restaurantVariables>(RESTAURANT_QUERY, {
     variables: {
       input: {
@@ -31,6 +45,15 @@ function Restaurant() {
       },
     },
   });
+
+  function addItemsToOrder(dishId: number) {
+    setOrderItems(current => [{dishId}]);
+    console.log(orderItems);
+  }
+
+  function startOrder() {
+    setOrderStarted(true);
+  }
 
   if (loading) {
     return (
@@ -54,20 +77,25 @@ function Restaurant() {
           <address className='text-sm text-gray-700'>
             {data?.restaurant.restaurant?.address}
           </address>
+          <Button text='Ordenar' onClick={startOrder} />
         </div>
       </div>
-      <div className='flex'>
+      <ul className='flex'>
         {data?.restaurant.restaurant?.menu.map(dish => (
-          <div key={dish.id} className='border px-5 py-3'>
+          <li
+            key={dish.id}
+            className='border px-5 py-3'
+            onClick={() => (orderStarted ? addItemsToOrder(dish.id) : null)}
+            aria-hidden='true'>
             <h3>{dish.name}</h3>
             {dish.options?.map(option => (
               <div key={option.name + dish.id}>
                 {option.name}: {option.extra}
               </div>
             ))}
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 }
