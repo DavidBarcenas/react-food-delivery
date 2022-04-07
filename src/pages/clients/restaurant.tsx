@@ -47,12 +47,22 @@ function Restaurant() {
   });
 
   function addItemsToOrder(dishId: number) {
-    setOrderItems(current => [{dishId}]);
-    console.log(orderItems);
+    if (isSelected(dishId)) {
+      return;
+    }
+    setOrderItems(current => [{dishId}, ...current]);
   }
 
   function startOrder() {
     setOrderStarted(true);
+  }
+
+  function removeFromOrder(dishId: number) {
+    setOrderItems(current => current.filter(item => item.dishId !== dishId));
+  }
+
+  function isSelected(dishId: number) {
+    return !!orderItems.find(order => order.dishId === dishId);
   }
 
   if (loading) {
@@ -62,6 +72,8 @@ function Restaurant() {
       </div>
     );
   }
+
+  console.log(orderItems);
 
   return (
     <div className='main-container'>
@@ -84,8 +96,12 @@ function Restaurant() {
         {data?.restaurant.restaurant?.menu.map(dish => (
           <li
             key={dish.id}
-            className='border px-5 py-3'
-            onClick={() => (orderStarted ? addItemsToOrder(dish.id) : null)}
+            className={`border px-5 py-3 ${isSelected(dish.id) ? 'border-lime-500' : ''}`}
+            onClick={() =>
+              orderStarted && !isSelected(dish.id)
+                ? addItemsToOrder(dish.id)
+                : removeFromOrder(dish.id)
+            }
             aria-hidden='true'>
             <h3>{dish.name}</h3>
             {dish.options?.map(option => (
