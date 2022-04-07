@@ -2,7 +2,7 @@ import {gql, useQuery} from '@apollo/client';
 import {useParams} from 'react-router-dom';
 import Spinner from '../../components/spinner';
 import Title from '../../components/title';
-import {RESTAURANT_FRAGMENT} from '../../fragments';
+import {DISH_FRAGMENT, RESTAURANT_FRAGMENT} from '../../fragments';
 import {restaurant, restaurantVariables} from '../../types/restaurant';
 
 const RESTAURANT_QUERY = gql`
@@ -12,10 +12,14 @@ const RESTAURANT_QUERY = gql`
       error
       restaurant {
         ...RestaurantFragment
+        menu {
+          ...DishFragment
+        }
       }
     }
   }
   ${RESTAURANT_FRAGMENT}
+  ${DISH_FRAGMENT}
 `;
 
 function Restaurant() {
@@ -51,6 +55,18 @@ function Restaurant() {
             {data?.restaurant.restaurant?.address}
           </address>
         </div>
+      </div>
+      <div className='flex'>
+        {data?.restaurant.restaurant?.menu.map(dish => (
+          <div key={dish.id} className='border px-5 py-3'>
+            <h3>{dish.name}</h3>
+            {dish.options?.map(option => (
+              <div key={option.name + dish.id}>
+                {option.name}: {option.extra}
+              </div>
+            ))}
+          </div>
+        ))}
       </div>
     </div>
   );
