@@ -3,6 +3,7 @@ import Restaurant from '../pages/clients/restaurant';
 import Restaurants from '../pages/clients/restaurants';
 import Search from '../pages/clients/search';
 import NotFound from '../pages/not-found';
+import Order from '../pages/order';
 import AddDish from '../pages/owner/add-dish';
 import AddRestaurant from '../pages/owner/add-restaurant';
 import MyRestaurant from '../pages/owner/my-restaurant';
@@ -14,6 +15,7 @@ import {UserRole} from '../types/globalTypes';
 const COMMON_ROUTES = [
   {path: '/edit-profile', element: <EditProfile />},
   {path: '/confirm', element: <ConfirmEmail />},
+  {path: '/orders/:id', element: <Order />},
   {path: '*', element: <NotFound />},
 ];
 
