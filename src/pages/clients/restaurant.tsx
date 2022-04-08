@@ -95,6 +95,20 @@ function Restaurant() {
     }
   }
 
+  function removeOptionFromItem(dishId: number, optionName: string) {
+    if (!isSelected(dishId)) {
+      return;
+    }
+    const oldItem = getItem(dishId);
+    if (oldItem) {
+      removeFromOrder(dishId);
+      setOrderItems(current => [
+        {dishId, options: oldItem.options?.filter(option => option.name !== optionName)},
+        ...current,
+      ]);
+    }
+  }
+
   console.log(orderItems);
 
   if (loading) {
@@ -147,6 +161,7 @@ function Restaurant() {
                 }`}>
                 {option.name}: {option.extra}
                 <button onClick={() => addOptionToItem(dish.id, option)}>+</button>
+                <button onClick={() => removeOptionFromItem(dish.id, option.name)}>-</button>
               </div>
             ))}
           </li>
