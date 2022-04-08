@@ -25,14 +25,14 @@ const RESTAURANT_QUERY = gql`
   ${DISH_FRAGMENT}
 `;
 
-const CREATE_ORDER_MUTATION = gql`
-  mutation createOrder($input: CreateOrderInput!) {
-    createOrder(input: $input) {
-      ok
-      error
-    }
-  }
-`;
+// const CREATE_ORDER_MUTATION = gql`
+//   mutation createOrder($input: CreateOrderInput!) {
+//     createOrder(input: $input) {
+//       ok
+//       error
+//     }
+//   }
+// `;
 
 function Restaurant() {
   const params = useParams<{id: string}>();
@@ -50,7 +50,7 @@ function Restaurant() {
     if (isSelected(dishId)) {
       return;
     }
-    setOrderItems(current => [{dishId}, ...current]);
+    setOrderItems(current => [{dishId, options: []}, ...current]);
   }
 
   function startOrder() {
@@ -62,8 +62,26 @@ function Restaurant() {
   }
 
   function isSelected(dishId: number) {
-    return !!orderItems.find(order => order.dishId === dishId);
+    return !!getItem(dishId);
   }
+
+  function getItem(dishId: number) {
+    return orderItems.find(order => order.dishId === dishId);
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function addOptionToItem(dishId: number, options: any) {
+    if (!isSelected(dishId)) {
+      return;
+    }
+    const oldItem = getItem(dishId);
+    if (oldItem) {
+      removeFromOrder(dishId);
+      setOrderItems(current => [{dishId, options: [options, ...oldItem.options!]}, ...current]);
+    }
+  }
+
+  console.log(orderItems);
 
   if (loading) {
     return (
@@ -72,8 +90,6 @@ function Restaurant() {
       </div>
     );
   }
-
-  console.log(orderItems);
 
   return (
     <div className='main-container'>
@@ -96,17 +112,23 @@ function Restaurant() {
         {data?.restaurant.restaurant?.menu.map(dish => (
           <li
             key={dish.id}
-            className={`border px-5 py-3 ${isSelected(dish.id) ? 'border-lime-500' : ''}`}
-            onClick={() =>
-              orderStarted && !isSelected(dish.id)
-                ? addItemsToOrder(dish.id)
-                : removeFromOrder(dish.id)
-            }
-            aria-hidden='true'>
-            <h3>{dish.name}</h3>
+            className={`border px-5 py-3 ${isSelected(dish.id) ? 'border-lime-500' : ''}`}>
+            <h3>
+              {dish.name}
+              <button
+                className='ml-2 text-lime-500'
+                onClick={() =>
+                  orderStarted && !isSelected(dish.id)
+                    ? addItemsToOrder(dish.id)
+                    : removeFromOrder(dish.id)
+                }>
+                Agregar
+              </button>
+            </h3>
             {dish.options?.map(option => (
               <div key={option.name + dish.id}>
                 {option.name}: {option.extra}
+                <button onClick={() => addOptionToItem(dish.id, option)}>+</button>
               </div>
             ))}
           </li>
