@@ -1,7 +1,6 @@
 import {ApolloClient, createHttpLink, InMemoryCache, makeVar, split} from '@apollo/client';
-import {GraphQLWsLink} from '@apollo/client/link/subscriptions';
+import {WebSocketLink} from '@apollo/client/link/ws';
 import {getMainDefinition} from '@apollo/client/utilities';
-import {createClient} from 'graphql-ws';
 import {setContext} from '@apollo/client/link/context';
 import {LOCAL_STORAGE_TOKEN} from './constants';
 
@@ -13,20 +12,21 @@ const httpLink = createHttpLink({
   uri: 'http://localhost:4000/graphql',
 });
 
-const wsLink = new GraphQLWsLink(
-  createClient({
-    url: 'ws://localhost:4000/graphql',
+const wsLink = new WebSocketLink({
+  uri: 'ws://localhost:4000/graphql',
+  options: {
+    reconnect: true,
     connectionParams: {
-      authorization: authToken() || '',
+      Authorization: authToken() || '',
     },
-  }),
-);
+  },
+});
 
 const authLink = setContext((_, {headers}) => {
   return {
     headers: {
       ...headers,
-      authorization: authToken() || '',
+      Authorization: authToken() || '',
     },
   };
 });
