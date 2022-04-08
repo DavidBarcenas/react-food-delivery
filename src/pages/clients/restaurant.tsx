@@ -1,10 +1,11 @@
-import {gql, useQuery} from '@apollo/client';
+import {gql, useMutation, useQuery} from '@apollo/client';
 import {useState} from 'react';
-import {useParams} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import Button from '../../components/button';
 import Spinner from '../../components/spinner';
 import Title from '../../components/title';
 import {DISH_FRAGMENT, RESTAURANT_FRAGMENT} from '../../fragments';
+import {createOrder, createOrderVariables} from '../../types/createOrder';
 import {CreateOrderItemInput} from '../../types/globalTypes';
 import {restaurant, restaurantVariables} from '../../types/restaurant';
 
@@ -25,17 +26,19 @@ const RESTAURANT_QUERY = gql`
   ${DISH_FRAGMENT}
 `;
 
-// const CREATE_ORDER_MUTATION = gql`
-//   mutation createOrder($input: CreateOrderInput!) {
-//     createOrder(input: $input) {
-//       ok
-//       error
-//     }
-//   }
-// `;
+const CREATE_ORDER_MUTATION = gql`
+  mutation createOrder($input: CreateOrderInput!) {
+    createOrder(input: $input) {
+      ok
+      error
+      orderId
+    }
+  }
+`;
 
 function Restaurant() {
   const params = useParams<{id: string}>();
+  const navigate = useNavigate();
   const [orderStarted, setOrderStarted] = useState(false);
   const [orderItems, setOrderItems] = useState<CreateOrderItemInput[]>([]);
   const {data, loading} = useQuery<restaurant, restaurantVariables>(RESTAURANT_QUERY, {
@@ -45,6 +48,10 @@ function Restaurant() {
       },
     },
   });
+  const [createOrderMutation, {loading: placingOrder}] = useMutation<
+    createOrder,
+    createOrderVariables
+  >(CREATE_ORDER_MUTATION, {onCompleted});
 
   function addItemsToOrder(dishId: number) {
     if (isSelected(dishId)) {
@@ -109,6 +116,42 @@ function Restaurant() {
     }
   }
 
+  function cancelOrder() {
+    setOrderStarted(false);
+    setOrderItems([]);
+  }
+
+  function confirmrOrder() {
+    if (orderItems.length === 0) {
+      console.log('no ha seleccionado nada');
+      return;
+    }
+    console.log('confirm order');
+    if (!placingOrder) {
+      createOrderMutation({
+        variables: {
+          input: {
+            restaurantId: Number(params.id),
+            items: [
+              {
+                dishId: orderItems[0].dishId,
+                options: orderItems[0].options?.map(option => ({name: option.name})),
+              },
+            ],
+          },
+        },
+      });
+    }
+  }
+
+  function onCompleted(data: createOrder) {
+    const {createOrder} = data;
+    if (data.createOrder.ok) {
+      console.log('order created');
+      navigate(`/orders/${createOrder.orderId}`);
+    }
+  }
+
   console.log(orderItems);
 
   if (loading) {
@@ -133,7 +176,14 @@ function Restaurant() {
           <address className='text-sm text-gray-700'>
             {data?.restaurant.restaurant?.address}
           </address>
-          <Button text='Ordenar' onClick={startOrder} />
+          {!orderStarted ? (
+            <Button text='Ordenar' onClick={startOrder} />
+          ) : (
+            <>
+              <Button text='Cancelar' onClick={cancelOrder} />
+              <Button text='Confirmar' onClick={confirmrOrder} />
+            </>
+          )}
         </div>
       </div>
       <ul className='flex'>
