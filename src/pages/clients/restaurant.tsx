@@ -76,8 +76,22 @@ function Restaurant() {
     }
     const oldItem = getItem(dishId);
     if (oldItem) {
-      removeFromOrder(dishId);
-      setOrderItems(current => [{dishId, options: [options, ...oldItem.options!]}, ...current]);
+      const hasOption = oldItem.options?.find(option => option.name === options.name);
+      if (!hasOption) {
+        removeFromOrder(dishId);
+        setOrderItems(current => [{dishId, options: [options, ...oldItem.options!]}, ...current]);
+      }
+    }
+  }
+
+  function getOptionFromItem(item: CreateOrderItemInput, optionName: string) {
+    return item.options?.find(option => option.name === optionName);
+  }
+
+  function isOptionSelected(dishId: number, optionName: string) {
+    const item = getItem(dishId);
+    if (item) {
+      return !!getOptionFromItem(item, optionName);
     }
   }
 
@@ -126,7 +140,11 @@ function Restaurant() {
               </button>
             </h3>
             {dish.options?.map(option => (
-              <div key={option.name + dish.id}>
+              <div
+                key={option.name + dish.id}
+                className={`border ${
+                  isOptionSelected(dish.id, option.name) ? 'border-red-500' : ''
+                }`}>
                 {option.name}: {option.extra}
                 <button onClick={() => addOptionToItem(dish.id, option)}>+</button>
               </div>
