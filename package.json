@@ -13,6 +13,7 @@
     "@types/react-dom": "^17.0.13",
     "cypress": "^9.5.3",
     "graphql": "^16.3.0",
+    "graphql-ws": "^5.7.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-helmet-async": "^1.2.3",
