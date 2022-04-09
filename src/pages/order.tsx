@@ -1,9 +1,11 @@
 import {useEffect} from 'react';
-import {gql, useQuery} from '@apollo/client';
+import {gql, useMutation, useQuery} from '@apollo/client';
 import {useParams} from 'react-router-dom';
 import {getOrder, getOrderVariables} from '../types/getOrder';
 import {orderUpdates} from '../types/orderUpdates';
 import {useProfile} from '../hooks/use-profile';
+import {editOrder, editOrderVariables} from '../types/editOrder';
+import {OrderStatus, UserRole} from '../types/globalTypes';
 
 const GET_ORDER_QUERY = gql`
   query getOrder($input: GetOrderInput!) {
@@ -48,9 +50,19 @@ const ORDER_SUBSCRIPTION = gql`
   }
 `;
 
+const EDIT_ORDER_MUTATION = gql`
+  mutation editOrder($input: EditOrderInput!) {
+    editOrder(input: $input) {
+      ok
+      error
+    }
+  }
+`;
+
 function Order() {
   const {id} = useParams();
   const {data: userProfile} = useProfile();
+  const [editOrderMutation] = useMutation<editOrder, editOrderVariables>(EDIT_ORDER_MUTATION);
   const {data, subscribeToMore} = useQuery<getOrder, getOrderVariables>(GET_ORDER_QUERY, {
     variables: {
       input: {
@@ -85,16 +97,35 @@ function Order() {
     }
   }, [data]);
 
+  function changeOrderStatus(status: OrderStatus) {
+    editOrderMutation({
+      variables: {
+        input: {
+          id: Number(id),
+          status,
+        },
+      },
+    });
+  }
+
   return (
     <div>
       Order
-      {userProfile?.me?.role === 'Client' && <h2>{data?.getOrder.order?.status} </h2>}
-      {userProfile?.me?.role === 'Owner' && (
+      {userProfile?.me?.role === UserRole.Client && <h2>{data?.getOrder.order?.status} </h2>}
+      {userProfile?.me?.role === UserRole.Owner && (
         <>
-          {data?.getOrder.order?.status === 'Pending' && <button>Aceptar orden</button>}
-          {data?.getOrder.order?.status === 'Coocking' && <button>Orden lista</button>}
+          {data?.getOrder.order?.status === OrderStatus.Pending && (
+            <button onClick={() => changeOrderStatus(OrderStatus.Coocking)}>Aceptar orden</button>
+          )}
+          {data?.getOrder.order?.status === OrderStatus.Coocking && (
+            <button onClick={() => changeOrderStatus(OrderStatus.Cooked)}>Orden lista</button>
+          )}
         </>
       )}
+      {data?.getOrder.order?.status !== OrderStatus.Pending &&
+        data?.getOrder.order?.status !== OrderStatus.Coocking && (
+          <h2>{data?.getOrder.order?.status}</h2>
+        )}
     </div>
   );
 }
