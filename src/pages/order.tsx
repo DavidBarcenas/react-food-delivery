@@ -1,7 +1,8 @@
-import {gql, useQuery, useSubscription} from '@apollo/client';
+import {useEffect} from 'react';
+import {gql, useQuery} from '@apollo/client';
 import {useParams} from 'react-router-dom';
 import {getOrder, getOrderVariables} from '../types/getOrder';
-import {orderUpdates, orderUpdatesVariables} from '../types/orderUpdates';
+import {orderUpdates} from '../types/orderUpdates';
 
 const GET_ORDER_QUERY = gql`
   query getOrder($input: GetOrderInput!) {
@@ -48,25 +49,45 @@ const ORDER_SUBSCRIPTION = gql`
 
 function Order() {
   const {id} = useParams();
-  const {data: subscriptionData} = useSubscription<orderUpdates, orderUpdatesVariables>(
-    ORDER_SUBSCRIPTION,
-    {
-      variables: {
-        input: {
-          id: Number(id),
-        },
-      },
-    },
-  );
-  const {data} = useQuery<getOrder, getOrderVariables>(GET_ORDER_QUERY, {
+  const {data, subscribeToMore} = useQuery<getOrder, getOrderVariables>(GET_ORDER_QUERY, {
     variables: {
       input: {
         id: Number(id),
       },
     },
   });
-  console.log(subscriptionData);
-  return <div>Order</div>;
+
+  useEffect(() => {
+    if (data?.getOrder.ok) {
+      subscribeToMore({
+        document: ORDER_SUBSCRIPTION,
+        variables: {
+          input: {
+            id: Number(id),
+          },
+        },
+        updateQuery: (prev, {subscriptionData}: {subscriptionData: {data: orderUpdates}}) => {
+          if (!subscriptionData?.data) {
+            return prev;
+          }
+          return {
+            getOrder: {
+              ...prev.getOrder,
+              order: {
+                ...subscriptionData.data.orderUpdates,
+              },
+            },
+          };
+        },
+      });
+    }
+  }, [data]);
+
+  return (
+    <div>
+      Order <h2>{data?.getOrder.order?.status}</h2>
+    </div>
+  );
 }
 
 export default Order;
