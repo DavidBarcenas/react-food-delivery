@@ -3,6 +3,7 @@ import {gql, useQuery} from '@apollo/client';
 import {useParams} from 'react-router-dom';
 import {getOrder, getOrderVariables} from '../types/getOrder';
 import {orderUpdates} from '../types/orderUpdates';
+import {useProfile} from '../hooks/use-profile';
 
 const GET_ORDER_QUERY = gql`
   query getOrder($input: GetOrderInput!) {
@@ -49,6 +50,7 @@ const ORDER_SUBSCRIPTION = gql`
 
 function Order() {
   const {id} = useParams();
+  const {data: userProfile} = useProfile();
   const {data, subscribeToMore} = useQuery<getOrder, getOrderVariables>(GET_ORDER_QUERY, {
     variables: {
       input: {
@@ -85,7 +87,14 @@ function Order() {
 
   return (
     <div>
-      Order <h2>{data?.getOrder.order?.status}</h2>
+      Order
+      {userProfile?.me?.role === 'Client' && <h2>{data?.getOrder.order?.status} </h2>}
+      {userProfile?.me?.role === 'Owner' && (
+        <>
+          {data?.getOrder.order?.status === 'Pending' && <button>Aceptar orden</button>}
+          {data?.getOrder.order?.status === 'Coocking' && <button>Orden lista</button>}
+        </>
+      )}
     </div>
   );
 }
