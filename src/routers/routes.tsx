@@ -2,6 +2,7 @@ import Category from '../pages/clients/category';
 import Restaurant from '../pages/clients/restaurant';
 import Restaurants from '../pages/clients/restaurants';
 import Search from '../pages/clients/search';
+import Dashboard from '../pages/driver/dashboard';
 import NotFound from '../pages/not-found';
 import Order from '../pages/order';
 import AddDish from '../pages/owner/add-dish';
@@ -33,6 +34,8 @@ const OWNER_ROUTES = [
   {path: '/restaurant/:id/add-dish', element: <AddDish />},
 ];
 
+const DRIVER_ROUTES = [{path: '/', element: <Dashboard />}];
+
 export function routes(role: string | undefined) {
   let showRoutes = COMMON_ROUTES;
 
@@ -41,6 +44,9 @@ export function routes(role: string | undefined) {
   }
   if (role === UserRole.Owner) {
     showRoutes = showRoutes.concat(OWNER_ROUTES);
+  }
+  if (role === UserRole.Delivery) {
+    showRoutes = showRoutes.concat(DRIVER_ROUTES);
   }
   return showRoutes;
 }
