@@ -1,7 +1,8 @@
 import ReactMapboxGl, {Layer, Feature} from 'react-mapbox-gl';
 import {useEffect, useState} from 'react';
-import {gql, useSubscription} from '@apollo/client';
+import {gql, useMutation, useSubscription} from '@apollo/client';
 import {cookedOrders} from '../../types/cookedOrders';
+import {takeOrder, takeOrderVariables} from '../../types/takeOrder';
 
 interface Coords {
   lat: number;
@@ -27,6 +28,15 @@ const COOCKED_ORDERS_SUBSCRIPTION = gql`
   }
 `;
 
+const TAKE_ORDER_MUTATION = gql`
+  mutation takeOrder($input: TakeOrderInput!) {
+    takeOrder(input: $input) {
+      ok
+      error
+    }
+  }
+`;
+
 const Map = ReactMapboxGl({
   accessToken: process.env.REACT_APP_MAP_KEY || '',
 });
@@ -34,6 +44,9 @@ const Map = ReactMapboxGl({
 function Dashboard() {
   const [coords, setCoords] = useState<Coords>({lat: 0, lng: 0});
   const {data} = useSubscription<cookedOrders>(COOCKED_ORDERS_SUBSCRIPTION);
+  const [takeOrderMutation] = useMutation<takeOrder, takeOrderVariables>(TAKE_ORDER_MUTATION, {
+    onCompleted,
+  });
 
   useEffect(() => {
     navigator.geolocation.watchPosition(onSuccess, onError, {
@@ -47,12 +60,26 @@ function Dashboard() {
     }
   }, [data]);
 
+  function onCompleted() {
+    // navigate to order
+  }
+
   function onSuccess({coords}: GeolocationPosition) {
     setCoords({lat: coords.latitude, lng: coords.longitude});
   }
 
   function onError(error: GeolocationPositionError) {
     console.log(error);
+  }
+
+  function sendOrder() {
+    takeOrderMutation({
+      variables: {
+        input: {
+          id: Number(data?.cookedOrders.id),
+        },
+      },
+    });
   }
 
   return (
@@ -83,6 +110,7 @@ function Dashboard() {
       {data?.cookedOrders && (
         <>
           <h1>{data.cookedOrders.status}</h1>
+          <button onClick={sendOrder}>Entregar pedido</button>
         </>
       )}
     </div>

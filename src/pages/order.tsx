@@ -122,10 +122,23 @@ function Order() {
           )}
         </>
       )}
+      {userProfile?.me?.role === UserRole.Delivery && (
+        <>
+          {data?.getOrder.order?.status === OrderStatus.Cooked && (
+            <button onClick={() => changeOrderStatus(OrderStatus.PickedUp)}>Entregar orden</button>
+          )}
+          {data?.getOrder.order?.status === OrderStatus.PickedUp && (
+            <button onClick={() => changeOrderStatus(OrderStatus.Delivered)}>Entregado!</button>
+          )}
+        </>
+      )}
       {data?.getOrder.order?.status !== OrderStatus.Pending &&
         data?.getOrder.order?.status !== OrderStatus.Coocking && (
           <h2>{data?.getOrder.order?.status}</h2>
         )}
+      {data?.getOrder.order?.status === OrderStatus.Delivered && (
+        <h2>Gracias por confirar en nosotros</h2>
+      )}
     </div>
   );
 }
