@@ -1,10 +1,31 @@
 import ReactMapboxGl, {Layer, Feature} from 'react-mapbox-gl';
 import {useEffect, useState} from 'react';
+import {gql, useSubscription} from '@apollo/client';
+import {cookedOrders} from '../../types/cookedOrders';
 
 interface Coords {
   lat: number;
   lng: number;
 }
+
+const COOCKED_ORDERS_SUBSCRIPTION = gql`
+  subscription cookedOrders {
+    cookedOrders {
+      id
+      status
+      total
+      driver {
+        email
+      }
+      customer {
+        email
+      }
+      restaurant {
+        name
+      }
+    }
+  }
+`;
 
 const Map = ReactMapboxGl({
   accessToken: process.env.REACT_APP_MAP_KEY || '',
@@ -12,12 +33,19 @@ const Map = ReactMapboxGl({
 
 function Dashboard() {
   const [coords, setCoords] = useState<Coords>({lat: 0, lng: 0});
+  const {data} = useSubscription<cookedOrders>(COOCKED_ORDERS_SUBSCRIPTION);
 
   useEffect(() => {
     navigator.geolocation.watchPosition(onSuccess, onError, {
       enableHighAccuracy: true,
     });
   }, []);
+
+  useEffect(() => {
+    if (data?.cookedOrders.id) {
+      // agregar la direccion del conductor
+    }
+  }, [data]);
 
   function onSuccess({coords}: GeolocationPosition) {
     setCoords({lat: coords.latitude, lng: coords.longitude});
@@ -35,7 +63,7 @@ function Dashboard() {
           center={[coords.lng, coords.lat]}
           zoom={[15]}
           containerStyle={{
-            height: '90vh',
+            height: '40vh',
             width: '100vw',
           }}>
           <Layer
@@ -52,6 +80,11 @@ function Dashboard() {
         </Map>
         ;
       </div>
+      {data?.cookedOrders && (
+        <>
+          <h1>{data.cookedOrders.status}</h1>
+        </>
+      )}
     </div>
   );
 }
