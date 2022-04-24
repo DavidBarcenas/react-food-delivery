@@ -1,46 +1,82 @@
-# React Food Delivery
+<div align="center">
+  <h1>React Food Delivery</h1>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![image](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![image](https://img.shields.io/badge/Apollo%20GraphQL-311C87?&style=for-the-badge&logo=Apollo%20GraphQL&logoColor=white)
+![image](https://img.shields.io/badge/GraphQl-E10098?style=for-the-badge&logo=graphql&logoColor=white)
+![image](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![image](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![image](https://img.shields.io/badge/Cypress-17202C?style=for-the-badge&logo=cypress&logoColor=white)
 
-## Available Scripts
+  <p>Food delivery application based on the concept of uber, rappi, etc... In which you can register as a customer, owner or delivery person and depending on your profile you can register your restaurant for the sale of food, help deliver orders and order what you like the most.</p>
+</div>
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- Notifications when:
+  - there is an order
+  - the order has been taken, cooked and delivered
+- Multiple role management
+- Email verification upon registration
+- User location for food delivery
+- Trace routes using mapbox
+- Restaurants CRUD, reports and statistics
+- Paypal payments to promote a restaurant
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Installation
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+To clone and run this application, you'll need [Git](https://git-scm.com) and
+[Node.js](https://nodejs.org/en/download/) installed on your computer. _Optional_ you can install
+[Yarn](https://yarnpkg.com/getting-started/install).
 
-### `npm test`
+From your command line:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+# Clone this repository
+$ git clone https://github.com/DavidBarcenas/react-food-delivery.git
 
-### `npm run build`
+# Go into the repository
+$ cd react-food-delivery
 
-Builds the app for production to the `build` folder.\
+# Install dependencies
+$ yarn install
+
+# Run the app
+$ yarn run start
+```
+
+**Note: This project has a backend made with nest.js, which you can configure to handle data
+persistence, authentication, mailing, notifications, and more. The repository can be found at the
+following link: [food-delivery-backend](https://github.com/DavidBarcenas/food-delivery-backend).**
+
+## Deployment
+
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+$ yarn run build
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Tests
 
-### `npm run eject`
+```bash
+# Run unit tests
+$ yarn run test
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+# View project test percentage
+$ yarn run test:coverage
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# e2e tests
+$ yarn run cypress open
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Dependencies
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+The [mapbox-gl](https://docs.mapbox.com/mapbox-gl-js/api/) library is used to create maps.It is
+necessary to have a [mapbox account](https://account.mapbox.com/) to be able to generate the token
+that we need for said library.
 
-## Learn More
+## License
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Released under the [MIT licensed](LICENSE).\
+Feel free to fork this project and improve it. Give a ⭐️ if you like this project!
