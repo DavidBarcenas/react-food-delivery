@@ -1,5 +1,5 @@
 import {Link} from 'react-router-dom';
-import {gql, useMutation} from '@apollo/client';
+import {useMutation} from '@apollo/client';
 import {useForm} from 'react-hook-form';
 import {loginMutation, loginMutationVariables} from '../types/loginMutation';
 import InputError from '../components/input-error';
@@ -7,18 +7,9 @@ import Button from '../components/button';
 import {emailRegex} from '../utils/validators';
 import {authToken, isLoggedInVar} from '../apollo';
 import {LOCAL_STORAGE_TOKEN} from '../constants';
-import Logo from '../components/logo';
 import Title from '../components/title';
-
-export const LOGIN_MUTATION = gql`
-  mutation loginMutation($loginInput: LoginInput!) {
-    login(input: $loginInput) {
-      ok
-      token
-      error
-    }
-  }
-`;
+import {LOGIN_MUTATION} from '../graphql/mutations';
+import logo from '../assets/img/logo.png';
 
 interface LoginForm {
   email: string;
@@ -58,11 +49,15 @@ function Login() {
   return (
     <div className='main-container'>
       <Title text='Iniciar sesión' />
+      <div className='auth-bg mb-12'>
+        <img src={logo} alt='Food Delivery' className='mr-3' width={40} />
+        <h1 className='text-2xl text-white md:text-3xl'>Food Delivery</h1>
+      </div>
+      <div className='mb-10 w-full px-10'>
+        <h2 className='text-xl font-semibold'>Bienvenido</h2>
+        <p className='text-gray-500'>Inicia sesión en tu cuenta para continuar</p>
+      </div>
       <div className='form-container'>
-        <div className='mb-8 px-10 text-center'>
-          <Logo mode='vertical' />
-          <p className='mt-1'>Bienvenido de nuevo</p>
-        </div>
         <form onSubmit={handleSubmit(onSubmit)} className='form-content'>
           {loginMutationResult?.login.error && (
             <InputError className='text-center' message={loginMutationResult?.login.error} filled />

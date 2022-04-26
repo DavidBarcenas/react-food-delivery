@@ -8,7 +8,7 @@
 ![image](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![image](https://img.shields.io/badge/Cypress-17202C?style=for-the-badge&logo=cypress&logoColor=white)
 
-  <p>Food delivery application based on the concept of uber, rappi, etc... In which you can register as a customer, owner or delivery person and depending on your profile you can register your restaurant for the sale of food, help deliver orders and order what you like the most.</p>
+  <p>Food delivery application based on the concept of uber eats and rappi. In which you can register as a customer, owner or delivery person and depending on your profile you can register your restaurant for the sale of food, help deliver orders and order what you like the most.</p>
 </div>
 
 ## Features
@@ -72,7 +72,7 @@ $ yarn run cypress open
 
 ## Dependencies
 
-The [mapbox-gl](https://docs.mapbox.com/mapbox-gl-js/api/) library is used to create maps.It is
+The [mapbox-gl](https://docs.mapbox.com/mapbox-gl-js/api/) library is used to create maps. It is
 necessary to have a [mapbox account](https://account.mapbox.com/) to be able to generate the token
 that we need for said library.
 

@@ -4,7 +4,8 @@ import {render, screen, waitFor} from '@testing-library/react';
 import {ApolloProvider} from '@apollo/client';
 import {BrowserRouter} from 'react-router-dom';
 import {HelmetProvider} from 'react-helmet-async';
-import Login, {LOGIN_MUTATION} from '../login';
+import Login from '../login';
+import {LOGIN_MUTATION} from '../../graphql/mutations';
 
 let mockClient: MockApolloClient;
 

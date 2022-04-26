@@ -10,7 +10,7 @@
 }
 
 .form-container {
-  @apply w-full max-w-lg py-20;
+  @apply w-full max-w-lg pb-20;
 }
 
 .form-content {
@@ -20,6 +20,12 @@
 .form-content > div {
   min-height: 60px;
   margin-bottom: 0.5rem;
+}
+
+.auth-bg {
+  @apply flex w-full items-center justify-center bg-cover bg-center bg-no-repeat;
+  background-image: url('https://images.pexels.com/photos/1199959/pexels-photo-1199959.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
+  min-height: 25vh;
 }
 
 img {
