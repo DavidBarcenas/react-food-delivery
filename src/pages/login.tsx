@@ -54,7 +54,7 @@ function Login() {
         <h1 className='text-2xl text-white md:text-3xl'>Food Delivery</h1>
       </div>
       <div className='mb-10 w-full px-10'>
-        <h2 className='text-xl font-semibold'>Bienvenido</h2>
+        <h2 className='text-xxl font-semibold'>Bienvenido</h2>
         <p className='text-gray-500'>Inicia sesión en tu cuenta para continuar</p>
       </div>
       <div className='form-container'>
