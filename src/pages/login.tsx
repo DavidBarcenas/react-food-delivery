@@ -47,57 +47,63 @@ function Login() {
   }
 
   return (
-    <div className='main-container'>
+    <div className='flex flex-wrap md:h-screen'>
       <Title text='Iniciar sesión' />
-      <div className='auth-bg mb-12'>
+      <div className='auth-bg mb-12 max-h-52 w-full md:mb-0 md:max-h-full md:w-2/5'>
         <img src={logo} alt='Food Delivery' className='mr-3' width={40} />
         <h1 className='text-2xl text-white md:text-3xl'>Food Delivery</h1>
       </div>
-      <div className='mb-10 w-full px-10'>
-        <h2 className='text-xxl font-semibold'>Bienvenido</h2>
-        <p className='text-gray-500'>Inicia sesión en tu cuenta para continuar</p>
-      </div>
-      <div className='form-container'>
-        <form onSubmit={handleSubmit(onSubmit)} className='form-content'>
-          {loginMutationResult?.login.error && (
-            <InputError className='text-center' message={loginMutationResult?.login.error} filled />
-          )}
-          <div>
-            <input
-              {...register('email', {
-                required: true,
-                pattern: emailRegex,
-              })}
-              name='email'
-              type='email'
-              required
-              placeholder='Correo electrónico'
-              className='input'
-            />
-            {email?.type === 'required' && <InputError message='El correo es requerido' />}
-            {email?.type === 'pattern' && <InputError message='Ingresa un correo válido' />}
+      <div className='flex w-full items-center justify-center md:w-[55%]'>
+        <div className='w-3/4 md:w-2/4'>
+          <div className='mb-10'>
+            <h2 className='text-2xl font-semibold tracking-wide'>Bienvenido</h2>
+            <p className='text-gray-500'>Inicia sesión en tu cuenta para continuar</p>
           </div>
-          <div>
-            <input
-              {...register('password', {required: 'La contraseña es requerida', minLength: 6})}
-              type='password'
-              placeholder='Contraseña'
-              required
-              className='input'
-            />
-            {password?.message && <InputError message={password?.message} />}
-            {password?.type === 'minLength' && (
-              <InputError message='La contraseña debe tener al menos 6 caracteres' />
+          <form onSubmit={handleSubmit(onSubmit)} className='form-content'>
+            {loginMutationResult?.login.error && (
+              <InputError
+                className='text-center'
+                message={loginMutationResult?.login.error}
+                filled
+              />
             )}
-          </div>
-          <Button type='submit' text='Acceder' loading={loading} />
-        </form>
-        <p className='text-center text-sm'>
-          ¿Eres nuevo por aqui?
-          <Link to='/signup' className='ml-1 text-lime-500 hover:underline'>
-            Crea una cuenta
-          </Link>
-        </p>
+            <div>
+              <input
+                {...register('email', {
+                  required: true,
+                  pattern: emailRegex,
+                })}
+                name='email'
+                type='email'
+                required
+                placeholder='Correo electrónico'
+                className='input'
+              />
+              {email?.type === 'required' && <InputError message='El correo es requerido' />}
+              {email?.type === 'pattern' && <InputError message='Ingresa un correo válido' />}
+            </div>
+            <div>
+              <input
+                {...register('password', {required: 'La contraseña es requerida', minLength: 6})}
+                type='password'
+                placeholder='Contraseña'
+                required
+                className='input'
+              />
+              {password?.message && <InputError message={password?.message} />}
+              {password?.type === 'minLength' && (
+                <InputError message='La contraseña debe tener al menos 6 caracteres' />
+              )}
+            </div>
+            <Button type='submit' text='Acceder' loading={loading} />
+          </form>
+          <p className='text-center text-sm'>
+            ¿Eres nuevo por aqui?
+            <Link to='/signup' className='ml-1 text-lime-500 hover:underline'>
+              Crea una cuenta
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );
