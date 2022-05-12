@@ -3,8 +3,9 @@ import {ApolloProvider} from '@apollo/client';
 import {screen, waitFor} from '@testing-library/react';
 import {createMockClient, MockApolloClient} from 'mock-apollo-client';
 import {customRender} from '../../__fixtures__/utils';
-import Signup, {CREATE_ACCOUNT_MUTATION} from '../signup';
+import Signup from '../signup';
 import {UserRole} from '../../types/globalTypes';
+import {CREATE_ACCOUNT_MUTATION} from '../../graphql/mutations';
 
 const mockNavigate = jest.fn();
 

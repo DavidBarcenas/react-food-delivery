@@ -53,10 +53,10 @@ function Login() {
         <img src={logo} alt='Food Delivery' className='mr-3' width={40} />
         <h1 className='text-2xl text-white md:text-3xl'>Food Delivery</h1>
       </div>
-      <div className='flex w-full items-center justify-center md:w-[55%]'>
+      <div className='flex w-full items-center justify-center md:w-3/5'>
         <div className='w-3/4 md:w-2/4'>
-          <div className='mb-10'>
-            <h2 className='text-2xl font-semibold tracking-wide'>Bienvenido</h2>
+          <div className='mb-7'>
+            <h2 className='mb-1 text-2xl font-semibold tracking-wide'>Bienvenido</h2>
             <p className='text-gray-500'>Inicia sesión en tu cuenta para continuar</p>
           </div>
           <form onSubmit={handleSubmit(onSubmit)} className='form-content'>
