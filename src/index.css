@@ -25,3 +25,9 @@ img {
 }
 
 @tailwind utilities;
+
+.main {
+  position: relative;
+  width: calc(100% - 256px);
+  left: 256px;
+}
