@@ -4,6 +4,34 @@ import {useProfile} from '../hooks/use-profile';
 import Error from '../pages/error';
 import {routes} from './routes';
 
+const navLinks = [
+  {
+    icon: 'home',
+    label: 'Inicio',
+    to: '/',
+  },
+  {
+    icon: 'dashboard',
+    label: 'Explorar',
+    to: '/dashboard',
+  },
+  {
+    icon: 'star_outline',
+    label: 'Favoritos',
+    to: '/favorites',
+  },
+  {
+    icon: 'email',
+    label: 'Mensajes',
+    to: '/messages',
+  },
+  {
+    icon: 'settings',
+    label: 'Ajustes',
+    to: '/settings',
+  },
+];
+
 function LoggedInRouter() {
   const {data, loading, error} = useProfile();
   const router = useRoutes(routes(data?.me?.role));
@@ -22,50 +50,33 @@ function LoggedInRouter() {
 
   return (
     <div>
-      <div className='fixed top-0 left-0 h-full w-64 bg-gray-50'>
+      <div className='fixed top-0 left-0 flex h-full w-64 flex-col justify-between bg-gray-50 p-4'>
         <div className='sidebar-header'>
-          <h1>Food Delivery</h1>
-        </div>
-        <div className='sidebar-body'>
+          <h1 className='mb-10'>Food Delivery</h1>
           <nav>
-            <ul>
-              <li>
-                <Link to='/'>
-                  <span className='material-icons-outlined'>home</span>
-                  <span className='sidebar-link'>Inicio</span>
-                </Link>
-              </li>
-              <li>
-                <Link to='/'>
-                  <span className='material-icons-outlined'>dashboard</span>
-                  <span className='sidebar-link'>Explorar</span>
-                </Link>
-              </li>
-              <li>
-                <Link to='/'>
-                  <span className='material-icons-outlined'>star_outline</span>
-                  <span className='sidebar-link'>Favoritos</span>
-                </Link>
-              </li>
-              <li>
-                <Link to='/'>
-                  <span className='material-icons-outlined'>email</span>
-                  <span className='sidebar-link'>Mensajes</span>
-                </Link>
-              </li>
-              <li>
-                <Link to='/'>
-                  <span className='material-icons-outlined'>settings</span>
-                  <span className='sidebar-link'>Ajustes</span>
-                </Link>
-              </li>
+            <ul className='text-sm'>
+              {navLinks.map(({icon, label, to}) => (
+                <li key={to} className='mb-2'>
+                  <Link
+                    to={to}
+                    className={`block rounded-md p-3 ${
+                      to === '/' ? 'bg-purple-800 font-medium text-white' : 'hover:bg-gray-100'
+                    }`}>
+                    <span className='material-icons-outlined mr-3 inline-block align-middle'>
+                      {icon}
+                    </span>
+                    <span className='sidebar-link inline-block align-middle'>{label}</span>
+                  </Link>
+                </li>
+              ))}
             </ul>
           </nav>
-          <button>
-            <span className='material-icons-outlined'>logout</span>
-            Cerrar sesión
-          </button>
         </div>
+
+        <button className='flex justify-center rounded-md bg-gray-100 py-3 hover:bg-gray-200'>
+          <span className='material-icons-outlined mr-3'>logout</span>
+          Cerrar sesión
+        </button>
       </div>
       <div className='main'>{router}</div>
     </div>
