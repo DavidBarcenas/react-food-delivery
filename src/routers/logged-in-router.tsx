@@ -3,6 +3,7 @@ import Spinner from '../components/spinner';
 import {useProfile} from '../hooks/use-profile';
 import Error from '../pages/error';
 import {routes} from './routes';
+import logo from '../assets/img/logo.png';
 
 const navLinks = [
   {
@@ -50,9 +51,12 @@ function LoggedInRouter() {
 
   return (
     <div>
-      <div className='fixed top-0 left-0 flex h-full w-64 flex-col justify-between bg-gray-50 p-4'>
+      <div className='fixed top-0 left-0 flex h-full w-64 flex-col justify-between bg-gray-50 px-4 py-6'>
         <div className='sidebar-header'>
-          <h1 className='mb-10'>Food Delivery</h1>
+          <div className='mb-8 flex items-center pl-2'>
+            <img src={logo} alt='logo' width={40} className='mr-3' />
+            <h1 className='text-xl font-medium'>Food Delivery</h1>
+          </div>
           <nav>
             <ul className='text-sm'>
               {navLinks.map(({icon, label, to}) => (
