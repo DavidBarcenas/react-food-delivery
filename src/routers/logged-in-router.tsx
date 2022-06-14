@@ -51,9 +51,9 @@ function LoggedInRouter() {
 
   return (
     <div>
-      <div className='fixed top-0 left-0 flex h-full w-64 flex-col justify-between bg-gray-50 px-4 py-6'>
+      <div className='fixed top-0 left-0 flex h-full w-64 flex-col justify-between bg-gray-50 px-4 py-5'>
         <div className='sidebar-header'>
-          <div className='mb-8 flex items-center pl-2'>
+          <div className='mb-5 flex items-center pl-2'>
             <img src={logo} alt='logo' width={40} className='mr-3' />
             <h1 className='text-xl font-medium'>Food Delivery</h1>
           </div>
@@ -75,6 +75,23 @@ function LoggedInRouter() {
               ))}
             </ul>
           </nav>
+        </div>
+
+        <div className='rounded-md bg-orange-50 px-4 py-6'>
+          <div className='text-center'>
+            <img
+              src='https://images.pexels.com/photos/2983101/pexels-photo-2983101.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
+              className='mb-2 rounded-md'
+              alt=''
+            />
+            <h3 className='font-semibold'>Hamburguesa por tan solo $20</h3>
+            <p className='my-5 text-xs text-gray-500'>
+              Es una oferta por tiempo limitado que caducará pronto
+            </p>
+            <button className='w-full rounded-md bg-orange-500 py-3 font-medium text-white'>
+              Pidela ahora
+            </button>
+          </div>
         </div>
 
         <button className='flex justify-center rounded-md bg-gray-100 py-3 hover:bg-gray-200'>
