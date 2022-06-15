@@ -1,6 +1,11 @@
 @tailwind base;
 @tailwind components;
 
+:root {
+  --primary-color: #7e22ce;
+  --secondary-color: #f97316;
+}
+
 .input {
   @apply block w-full rounded-lg bg-gray-100 py-3 px-5 shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50;
 }

@@ -99,7 +99,7 @@ function Login() {
           </form>
           <p className='text-center text-sm'>
             ¿Eres nuevo por aqui?
-            <Link to='/signup' className='ml-1 text-lime-500 hover:underline'>
+            <Link to='/signup' className='ml-1 text-secondary-color hover:underline'>
               Crea una cuenta
             </Link>
           </p>
