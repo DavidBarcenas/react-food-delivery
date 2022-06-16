@@ -97,7 +97,7 @@ function Login() {
             </div>
             <Button type='submit' text='Acceder' loading={loading} />
           </form>
-          <p className='text-center text-sm'>
+          <p className='text-center text-sm text-gray-500'>
             ¿Eres nuevo por aqui?
             <Link to='/signup' className='ml-1 text-secondary-color hover:underline'>
               Crea una cuenta

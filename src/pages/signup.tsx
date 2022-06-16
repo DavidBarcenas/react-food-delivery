@@ -141,8 +141,8 @@ function Signup() {
                 <label
                   htmlFor={id}
                   key={id}
-                  className={`group mb-3 flex items-center rounded-lg border-2 py-4 px-3 transition-colors hover:cursor-pointer hover:border-lime-500 ${
-                    value === watch('role') ? 'border-lime-500' : 'border-gray-200'
+                  className={`group mb-3 flex items-center rounded-lg border-2 py-4 px-3 transition-colors hover:cursor-pointer hover:border-secondary-color ${
+                    value === watch('role') ? 'border-secondary-color' : 'border-gray-200'
                   }`}>
                   <span className='material-icons mr-2'>{icon}</span>
                   <p>{text}</p>
@@ -158,9 +158,9 @@ function Signup() {
             </div>
             <Button type='submit' text='Registrarse' loading={loading} />
           </form>
-          <p className='pb-7 text-center text-sm'>
+          <p className='pb-7 text-center text-sm text-gray-500'>
             ¿Ya tienes una cuenta?
-            <Link to='/' className='ml-1 text-lime-500 hover:underline'>
+            <Link to='/' className='ml-1 text-secondary-color hover:underline'>
               Inicia sesión
             </Link>
           </p>
