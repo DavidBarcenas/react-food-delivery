@@ -60,7 +60,7 @@ function LoggedInRouter() {
           <nav>
             <ul className='text-sm'>
               {navLinks.map(({icon, label, to}) => (
-                <li key={to} className='mb-2'>
+                <li key={to}>
                   <Link
                     to={to}
                     className={`block rounded-md p-3 ${
@@ -99,7 +99,31 @@ function LoggedInRouter() {
           Cerrar sesión
         </button>
       </div>
-      <div className='main'>{router}</div>
+      <div className='main'>
+        <header className='px-4'>
+          <div className='flex items-center justify-between px-4 py-2'>
+            <div className='flex items-center text-sm'>
+              <div className='mr-10 flex items-center'>
+                <span className='material-icons-outlined mr-2'>gps_fixed</span>
+                <span>Ciudad de México</span>
+              </div>
+              <div className='flex items-center'>
+                <span className='material-icons-outlined mr-2'>local_activity</span>
+                <span>Mejores ofertas</span>
+              </div>
+            </div>
+            <div className='flex'>
+              <form className='m-auto w-96' autoComplete='off'>
+                <input type='search' placeholder='Buscar un restaurante' className='input' />
+              </form>
+              <button className='ml-5 flex items-center rounded-md bg-secondary-color p-3'>
+                <span className='material-icons-outlined'>shopping_cart</span>
+              </button>
+            </div>
+          </div>
+        </header>
+        {router}
+      </div>
     </div>
   );
 }
