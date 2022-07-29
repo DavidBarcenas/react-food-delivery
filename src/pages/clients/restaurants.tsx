@@ -64,15 +64,20 @@ function Restaurants() {
   return (
     <div className='pb-20'>
       <Title text='Inicio' />
-      <div className='mb-7 w-full bg-gray-800 px-10 py-20'>
-        <form className='m-auto w-5/12' onSubmit={handleSubmit(submitForm)} autoComplete='off'>
+      <div className='mb-7 h-64 w-full bg-gray-800'>
+        {/* <form className='m-auto w-5/12' onSubmit={handleSubmit(submitForm)} autoComplete='off'>
           <input
             type='search'
             placeholder='Buscar un restaurante'
             className='input'
             {...register('q', {required: true})}
           />
-        </form>
+        </form> */}
+        <img
+          src='https://cazaofertas.com.mx/wp-content/uploads/2020/03/Beer-Factory-lunes-090320-01.jpg'
+          alt='Banner'
+          className='h-64 w-full object-cover'
+        />
       </div>
       {!loading ? (
         <div className='px-10'>
