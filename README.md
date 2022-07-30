@@ -11,6 +11,10 @@
   <p>Food delivery application based on the concept of uber eats and rappi. In which you can register as a customer, owner or delivery person and depending on your profile you can register your restaurant for the sale of food, help deliver orders and order what you like the most.</p>
 </div>
 
+### Preview
+
+![](./.readme-static/app.jpeg)
+
 ## Features
 
 - Notifications when:
